@@ -1,0 +1,37 @@
+Package: CMIP6VisR
+Type: Package
+Title: Visualization and Analysis of CMIP6 Hydroclimatic Data
+Version: 0.0.1
+Date: 2025-01-13
+Authors@R: c(person("Simon Michael", "Papalexiou", 
+                      role = "aut"),
+             person("Heba", "Abdelmoaty", 
+                      role = "aut"),,
+             person("Kevin", "Shook", 
+                      role = c("ctb", "cre"),
+                      email = "kshookk@kshook.ca")
+              )
+Description: Provides data manipulation, analyses and visualization for CMIP6 hydroclimatic dats. The files are been archived in the Federated Research
+Data Repository (FRDR; https://doi.org/10.20383/103.0829.
+Depends: R (>= 3.5.0)
+Imports:
+    utils,
+    methods,
+    stats,
+    ggplot2,
+    terra
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Roxygen: list(markdown = TRUE)
+Suggests: 
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Author: Simon Michael Papalexiou [aut],
+  Heba Abdelmoaty [aut],
+  Kevin Shook [ctb, cre]
+Maintainer: Kevin Shook <kshook@kshook.ca>
+License: GPL-3
+URL: https://github.com/TycheLab/CMIP6VisR
