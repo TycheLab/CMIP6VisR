@@ -6,20 +6,20 @@ Date: 2025-01-13
 Authors@R: c(person("Simon Michael", "Papalexiou", 
                       role = "aut"),
              person("Heba", "Abdelmoaty", 
-                      role = "aut"),,
+                      role = "aut"),
              person("Kevin", "Shook", 
                       role = c("ctb", "cre"),
-                      email = "kshookk@kshook.ca")
+                      email = "kshook@kshook.ca")
               )
-Description: Provides data manipulation, analyses and visualization for CMIP6 hydroclimatic dats. The files are been archived in the Federated Research
-Data Repository (FRDR; https://doi.org/10.20383/103.0829.
+Description: Provides data manipulation, analyses and visualization for CMIP6 hydroclimatic dats. The files are been archived in the Federated Research Data Repository (FRDR; https://doi.org/10.20383/103.0829).
 Depends: R (>= 3.5.0)
 Imports:
     utils,
     methods,
     stats,
     ggplot2,
-    terra
+    terra,
+    dplyr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.1.1

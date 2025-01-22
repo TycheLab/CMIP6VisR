@@ -6,8 +6,7 @@ cv_nc_to_df <- function(nc){
   pts <- as.data.frame(points)
   
   #Removing NA points
-  pts1 <- subset(pts,pts$x != "NA",)
-  pts <- subset(pts1, pts$y != "NA",)
+  pts <- pts[pts$x != "NA" & pts$y != "NA",]
   
   return(pts)
 }
