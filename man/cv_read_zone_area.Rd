@@ -18,4 +18,8 @@ for computing the basin mean precipitation statistics for a given Canadian hydro
 }
 \examples{
 zone_area_grid <- cv_read_zone_area()
+
+}
+\author{
+Heba Abdelmoaty Kevin SHook
 }

@@ -2,6 +2,7 @@
 
 export(cv_all_basin_daily_precip)
 export(cv_read_zone_area)
+export(cv_zone_area_raster)
 import(sp)
 import(terra)
 importFrom(terra,rast)
