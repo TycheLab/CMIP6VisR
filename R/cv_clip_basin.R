@@ -7,9 +7,19 @@
 ##' @param za_rast \code{SpatRaster} of the zones and areas
 ##' @param basin \code{SpatVector} of the basin to clip to
 ##'
+##' @import terra
 cv_clip_basin <- function(za_rast, basin) {
-    result <- crop(za_rast, basin)
-    zones <- values(result)[, 1]
-    areas <- values(result)[, 2]
-    return(list(zones, areas))
+    result <- terra::crop(za_rast, basin)
+    zones <- subset(result, 1)
+    areas <- subset(result, 2)
+    rasts <- lapply(
+        unique(values(zones)),
+        function(v) {
+            terra::trim(terra::mask(areas, zones == v,
+                                    inverse = TRUE, maskvalue = FALSE
+                                    ))
+        }
+    )
+    total_areas <- rapply(rasts, function(r) { sum(values(r))})
+    return(list(rasts, total_areas))
 }
