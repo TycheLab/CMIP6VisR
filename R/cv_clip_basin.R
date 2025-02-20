@@ -9,17 +9,19 @@
 ##'
 ##' @import terra
 cv_clip_basin <- function(za_rast, basin) {
-    result <- terra::crop(za_rast, basin)
-    zones <- subset(result, 1)
-    areas <- subset(result, 2)
-    rasts <- lapply(
-        unique(values(zones)),
-        function(v) {
-            terra::trim(terra::mask(areas, zones == v,
-                                    inverse = TRUE, maskvalue = FALSE
-                                    ))
-        }
-    )
-    total_areas <- rapply(rasts, function(r) { sum(values(r))})
-    return(list(rasts, total_areas))
+  result <- terra::crop(za_rast, basin, mask=TRUE)
+  zones <- subset(result, 1)
+  areas <- subset(result, 2)
+  rasts <- lapply(
+    unique(values(zones)),
+    function(v) {
+      terra::mask(areas, zones == v,
+                  inverse = TRUE, maskvalue = FALSE
+                  )
+    }
+  )
+  total_areas <- rapply(rasts, function(r) {
+    sum(values(r))
+  })
+  return(list(rasts, total_areas))
 }
