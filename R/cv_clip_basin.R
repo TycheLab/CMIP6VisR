@@ -13,15 +13,13 @@ cv_clip_basin <- function(za_rast, basin) {
   zones <- subset(result, 1)
   areas <- subset(result, 2)
   rasts <- lapply(
-    unique(values(zones)),
-    function(v) {
-      terra::mask(areas, zones == v,
-                  inverse = TRUE, maskvalue = FALSE
-                  )
-    }
+      unique(zones)[[1]],
+      function(v) {
+          (terra::mask(areas, zones, maskvalues=v, inverse = TRUE))
+      }
   )
   total_areas <- rapply(rasts, function(r) {
-    sum(values(r))
+    sum(values(r), na.rm=TRUE)
   })
-  return(list(rasts, total_areas))
+  return(list(raster=rasts, area=total_areas, zone=unique(zones)[[1]]))
 }
