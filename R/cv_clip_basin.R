@@ -15,7 +15,7 @@ cv_clip_basin <- function(za_rast, basin) {
   rasts <- lapply(
       unique(zones)[[1]],
       function(v) {
-          (terra::mask(areas, zones, maskvalues=v, inverse = TRUE))
+          terra::trim(terra::mask(areas, zones, maskvalues=v, inverse = TRUE))
       }
   )
   total_areas <- rapply(rasts, function(r) {
