@@ -1,24 +1,38 @@
 #' Calculates basin-averaged daily precipitation
 #' 
 #' @description
-#' A short description...
+#' Extracts the daily precipitation values from CMIP6 NetCDF files, and calculates
+#' the mean precipitation for a given basin for each time interval. The original files are in 
+#' longitude-latitude projection, so the areas of the cells varies. The cell areas
+#' are used to weight the precipitation when computing the basin mean precipitation.  
 #' 
-#'
+#' The CMIP6 data are arranged by zone in 9 files. As a given basin may lie over more than 
+#' one zone, it may necessary to read in data from more than one NetCDF file when computing
+#' the basin mean precipitation.
+#' 
 #' @param netcdf_directory Required. Directory containing NetCDF files. 
 #' @param scenario Required. Full name of scenario to be used. This is the file name omitting the zone number.
-#' @param basin_zone_area Required. A list object returned by `cv_clip_basin` which contains the zone numbers to be used,
+#' @param basin_zone_area Required. A list object returned by `cv_clip_basin()` which contains the zone numbers to be used,
 #' the basin area within each zone, and rasters of each zone containing the area of each
 #' element.
-#' @param  temp_file. If `TRUE` (the default) then temporary files will be used when 
+#' @param temp_file If `TRUE` (the default) then temporary files will be used when extracting the values
+#' from the NetCDF files. This option is slower than keeping all the values in 
+#' memory (which is what occurs if `temp_file = TRUE`), _but_ allows the function
+#' to work with very large basins, which may require more memory than is available. 
+#' 
+#' 
 #' @author Kevin Shook
 #' @seealso \code{\link{cv_clip_basin}} 
 #' @importFrom stringr str_sub
 #' @importFrom terra crop
 #' @importFrom terra global
-#' @returns Reruns a data frame with 2 columns: `date` and `precipitation`.
+#' @returns Reruns a data frame with 2 columns: `date` and `precipitation`. The
+#' `date` is a standard \R date over the interval 2015-01-01 to 2100-12-31, and the 
+#' `precipitation` is the basin mean value.
 #' @export
 #'
 #' @examples \donttest{
+#' library(terra)
 #' az_raster <- cv_zone_area_raster()
 #' fpath <- system.file("extdata", "07BF001.shp", package = "CMIP6VisR")
 #' basin_vector <- vect(fpath)

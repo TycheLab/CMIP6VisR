@@ -21,12 +21,16 @@ clips them from polygon \code{basin}
 }
 \examples{
 {
+library(terra)
 az_raster <- cv_zone_area_raster()
 fpath <- system.file("extdata", "07BF001.shp", package = "CMIP6VisR")
 basin_vector <- vect(fpath)
 basin_areas <- cv_clip_basin(az_raster, basin_vector)
 }
 
+}
+\seealso{
+\code{\link{cv_basin_daily_precip}}
 }
 \author{
 Kostas Andreadis

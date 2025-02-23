@@ -10,7 +10,9 @@
 #' @export
 #' @return Returns a list with 3 elements: 1) `raster` (rasters of cell areas for each zone),
 #' 2) `area` total area of each zone in the basin, and 3) `zone` zone numbers.
+#' @seealso \code{\link{cv_basin_daily_precip}} 
 #' @examples{
+#' library(terra)
 #' az_raster <- cv_zone_area_raster()
 #' fpath <- system.file("extdata", "07BF001.shp", package = "CMIP6VisR")
 #' basin_vector <- vect(fpath)
