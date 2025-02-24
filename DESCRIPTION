@@ -1,8 +1,8 @@
 Package: CMIP6VisR
 Type: Package
 Title: Visualization and Analysis of CMIP6 Hydroclimatic Data
-Version: 0.0.1
-Date: 2025-01-13
+Version: 1.0.0
+Date: 2025-02-23
 Authors@R: c(person("Simon Michael", "Papalexiou", 
                       role = "aut"),
              person("Heba", "Abdelmoaty", 
@@ -13,15 +13,11 @@ Authors@R: c(person("Simon Michael", "Papalexiou",
                       role = c("ctb", "cre"),
                       email = "kshook@kshook.ca")
               )
-Description: Provides data manipulation, analyses and visualization for CMIP6 hydroclimatic dats. The files are been archived in the Federated Research Data Repository (FRDR; https://doi.org/10.20383/103.0829).
+Description: Provides data manipulation, analyses and visualization for CMIP6 hydroclimatic data. The files are been archived in the Federated Research Data Repository (FRDR; https://doi.org/10.20383/103.0829).
 Depends: R (>= 3.5.0)
 Imports:
-    utils,
-    methods,
-    stats,
-    ggplot2,
     terra,
-    dplyr
+    stringr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
