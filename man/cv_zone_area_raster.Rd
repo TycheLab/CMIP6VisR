@@ -17,6 +17,7 @@ for computing the basin mean precipitation statistics for a given Canadian hydro
 }
 \examples{
 zone_area_grid <- cv_zone_area_raster()
+library(terra)
 plot(zone_area_grid)
 
 }
