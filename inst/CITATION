@@ -1,0 +1,82 @@
+year <- sub("-.*", "", meta$Date)
+note <- sprintf("R package version %s", meta$Version)
+
+bibentry(
+  bibtype  = "Article",
+  title    = "Bias-corrected high-resolution temperature and precipitation projections for Canada",
+  author   = c(person(given = c("Hebatallah", "M."), family = "Abdelmoaty"),
+               person(given = c("Chandra","Rupa"), family = "Rajulapati"),
+               person(given = c("Sofia","D."), family = "Nerantzaki"),
+               person(given = c("Simon", "Michael"), family = "Papalexiou")
+               ),
+  journal  = "Scientific Data",
+  year     = "2025",
+  volume   = "12",
+  pages    = "191",
+  url      = "https://www.nature.com/articles/s41597-025-04396-z?"
+)
+
+bibentry(
+  bibtype = "Article",
+  author = c(
+    person(given = "Chandra Rupa", family = "Rajulapati"),
+    person(given = "Hebatallah Mohamed", family = "Abdelmoaty"),
+    person(given = "Sofia D.", family = "Nerantzaki"),
+    person(given = "Simon Michael", family = "Papalexiou")
+  ),
+  title = "Changes in the risk of extreme temperatures in megacities worldwide",
+  journal = "Climate Risk Management",
+  volume = "36",
+  pages = "100433",
+  year = "2022",
+  url = "https://doi.org/10.1016/j.crm.2022.100433"
+)
+
+
+bibentry(
+  bibtype = "Article",
+  title = "Precipitation bias correction: a novel semi-parametric quantile mapping method",
+  author = c(
+    person(given = "Chandra Rupa", family = "Rajulapati"),
+    person(given = "Simon Michael", family = "Papalexiou")
+  ),
+  journal = "Earth and Space Science",
+  volume = "10",
+  number = "4",
+  pages = "e2023EA002823",
+  year = "2023",
+  publisher = "Wiley Online Library"
+)
+
+
+bibentry(
+  bibtype = "Article",
+  author = c(
+    person(given = "Chandra Rupa", family = "Rajulapati"),
+    person(given = "Rohan Kumar", family = "Gaddam"),
+    person(given = "Sofia D.", family = "Nerantzaki"),
+    person(given = "Simon Michael", family = "Papalexiou"),
+    person(given = "Alex J.", family = "Cannon"),
+    person(given = "Martyn P.", family = "Clark")
+  ),
+  title = "Exacerbated heat in large Canadian cities",
+  journal = "Urban Climate",
+  volume = "42",
+  pages = "101097",
+  year = "2022",
+  url = "https://doi.org/10.1016/j.uclim.2022.101097"
+)
+
+bibentry(
+  bibtype = "Article",
+  author = c(
+    person(given = "Hebatallah Mohamed", family = "Abdelmoaty"),
+    person(given = "Simon Michael", family = "Papalexiou")
+  ),
+  title = "Changes of extreme precipitation in CMIP6 projections: should we use stationary or nonstationary models?",
+  journal = "Journal of Climate",
+  volume = "36",
+  number = "9",
+  pages = "2999--3014",
+  year = "2023"
+)

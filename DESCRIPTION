@@ -29,6 +29,7 @@ Suggests:
 VignetteBuilder: knitr
 Author: Simon Michael Papalexiou [aut],
   Heba Abdelmoaty [aut],
+  Konstantinos Andreadis [aut],
   Kevin Shook [ctb, cre]
 Maintainer: Kevin Shook <kshook@kshook.ca>
 License: GPL-3
