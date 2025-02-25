@@ -25,7 +25,8 @@ knitr::opts_chunk$set(eval = TRUE,
                       warning = FALSE,
                       message = FALSE)
 ```
-`CMIP6VisR` aims to facilitate handling the downscaled product of CMIP6 projectins **SPQM-CMIP6_CAN**. 
+
+`CMIP6VisR` aims to facilitate handling the downscaled product of CMIP6 projections **SPQM-CMIP6_CAN**. 
 
 This dataset provides high-resolution (0.1°) daily precipitation and temperature projections for Canada, extending to 2100. Bias correction was performed using the Semi-Parametric Quantile Mapping (SPQM) method, ensuring reliable representation of observed marginal properties, trends, and variability while enabling a smooth transition from historical observations to future projections. This dataset includes 693 precipitation simulations from 34 climate models and 581 temperature simulations from 27 models, covering four Shared Socioeconomic Pathways (SSPs). Designed for hydrological, environmental, and ecological research, SPQM-CMIP6-CAN supports risk assessment, planning, and uncertainty quantification in climate impact studies.
 
@@ -60,10 +61,7 @@ _"This publication employes the same methods for bias correctiong daily precipit
 Install packages 
 ```{r, warning=FALSE, message=FALSE}
 library(CMIP6VisR)
-library(sf)
 library(terra)
-library(dplyr)
-library(stringr)
 ```
 
 
@@ -124,11 +122,11 @@ The following function `cv_basin_daily_precip` takes:
 2. *scenario* the scenario argument which indicates the name of the simulation (the part of the string that is before the zone number). For example: "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_"
 3. *basin_zone_area*: the output resulting from `cv_clip_basin` getting the grid area information of the target basin. 
 
-```{r}
+```{r eval=FALSE}
 ##Don't run (input files are large files and this example for demonstration only)
-# values <- cv_basin_daily_precip(netcdf_directory = "./data/",
-#                                 scenario = "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_",
-#                                 basin_zone_area = req_data,
-#                                 temp_file = FALSE)
+values <- cv_basin_daily_precip(netcdf_directory = "./data/",
+                                scenario = "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_",
+                                basin_zone_area = req_data,
+                                temp_file = FALSE)
 ```
 
