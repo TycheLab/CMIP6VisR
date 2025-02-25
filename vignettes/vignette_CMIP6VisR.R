@@ -22,25 +22,30 @@ basin_vector <- vect(fpath)
 req_data <- cv_clip_basin(zone_area_grid, basin_vector)
 
 
-#Printing the zones that are required for the targeted area
+# printing the zones that are required for the targeted area
 print(req_data[["zone"]])
 
 ## ----message=FALSE, warning=FALSE---------------------------------------------
 # Isolating the raster outputs
 raster_list <- req_data$raster
 
+terra::plot(raster_list[[1]], main = expression("Zone 4, Grid Areas in " ~ km^2))
+
+terra::plot(raster_list[[2]], main = expression("Zone 7, Grid Areas in " ~ km^2))
+
 # Merge the individual rasters using terra::merge
 merged_raster <- do.call(terra::merge, req_data$raster)
 
 # Plot the merged raster
-terra::plot(merged_raster, main = expression("Grid Areas in " ~ km^2))
-
+terra::plot(merged_raster, main = expression("All zones, Grid Areas in " ~ km^2))
 
 
 ## ----eval=FALSE---------------------------------------------------------------
-#  ##Don't run (input files are large files and this example for demonstration only)
-#  values <- cv_basin_daily_precip(netcdf_directory = "./data/",
-#                                  scenario = "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_",
-#                                  basin_zone_area = req_data,
-#                                  temp_file = FALSE)
+# values <- cv_basin_daily_precip(netcdf_directory = "./data/",
+#                                 scenario = "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_",
+#                                 basin_zone_area = req_data,
+#                                 temp_file = FALSE)
+
+## ----eval=FALSE---------------------------------------------------------------
+# plot(values)
 

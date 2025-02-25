@@ -67,12 +67,10 @@ library(terra)
 
 ## Download the required simulation
 
-
 Each simulation is divided into nine zones to facilitate efficient computational processing. As a first step, users must determine which zone(s) their shapefile intersects with to ensure they download the correct simulation data.
 
 
 To know which zones are included in the targeted region, refer to the following chunk:
-
 
 ```{r warning=FALSE}
 # convert the dataframe of zones to raster (built-in the package)
@@ -87,46 +85,62 @@ basin_vector <- vect(fpath)
 req_data <- cv_clip_basin(zone_area_grid, basin_vector)
 
 
-#Printing the zones that are required for the targeted area
+# printing the zones that are required for the targeted area
 print(req_data[["zone"]])
 ```
 
+
+The command `cv_clip_basin` returns rasters of the cell areas for each zone
+which your basin overlaps. The individual rasters are plotted for each zone
+and together.
 
 ```{r message=FALSE, warning=FALSE}
 # Isolating the raster outputs
 raster_list <- req_data$raster
 
+terra::plot(raster_list[[1]], main = expression("Zone 4, Grid Areas in " ~ km^2))
+
+terra::plot(raster_list[[2]], main = expression("Zone 7, Grid Areas in " ~ km^2))
+
 # Merge the individual rasters using terra::merge
 merged_raster <- do.call(terra::merge, req_data$raster)
 
 # Plot the merged raster
-terra::plot(merged_raster, main = expression("Grid Areas in " ~ km^2))
-
+terra::plot(merged_raster, main = expression("All zones, Grid Areas in " ~ km^2))
 
 ```
 
 
+Once the relevant zone(s) are identified, users can proceed to download the required simulations, selecting the appropriate climate model and future scenario. These files can be accessed and downloaded locally via the FRDR portal: <https://www.frdr-dfdr.ca/repo/dataset/7a02a1e0-3402-4183-af41-dfa483ef06b1>. Note that all the files
+are NetCDF files. 
 
-
-
-Once the relevant zone(s) are identified, users can proceed to download the required simulations, selecting the appropriate climate model and future scenario. These files can be accessed and downloaded locally via the FRDR portal: https://www.frdr-dfdr.ca/repo/dataset/7a02a1e0-3402-4183-af41-dfa483ef06b1
-
-Alternatively, users have the option to leverage Globus Data Transfer for downloading files directly through the FRDR portal, providing a seamless transfer of large datasets. Users will need to set up their own Globus account, and thus this data could easily be transferred to local directories or HPCs. 
-
+Alternatively, users have the option to leverage Globus Data Transfer for downloading files directly through the FRDR portal, providing a seamless transfer of large datasets to local directories or HPCs. Users will need to set up their own Globus account. More information about Globus is available at <https://www.globus.org/>.
 
 
 ## Get the data within the required shapefile
 
-The following function `cv_basin_daily_precip` takes:
-1. *netcdf_directory*: the path of the saved NC files downloaded from the FRDR portal. 
+The function `cv_basin_daily_precip` has several parameters:
+1. *netcdf_directory*: the path of the saved NC files downloaded from the FRDR portal.
 2. *scenario* the scenario argument which indicates the name of the simulation (the part of the string that is before the zone number). For example: "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_"
 3. *basin_zone_area*: the output resulting from `cv_clip_basin` getting the grid area information of the target basin. 
+4. *temp_file*: if `FALSE` (the default), the function tries to complete all operations in memory, 
+which is relatively fast. However, if you are using a very large basin, then you might run of memory.
+In this case, you need to specify `temp_file = TRUE`.
 
-```{r eval=FALSE}
-##Don't run (input files are large files and this example for demonstration only)
+The function uses the areas for each cell to weight the precipitation from the NetCDF file(s).
+
+```{r, eval=FALSE}
 values <- cv_basin_daily_precip(netcdf_directory = "./data/",
                                 scenario = "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_",
                                 basin_zone_area = req_data,
                                 temp_file = FALSE)
 ```
 
+
+Plot the basin daily precipitation values
+
+```{r, eval=FALSE}
+plot(values)
+```
+
+![](precip.png)
