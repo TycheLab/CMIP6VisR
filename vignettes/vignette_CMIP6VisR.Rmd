@@ -143,4 +143,4 @@ Plot the basin daily precipitation values
 plot(values)
 ```
 
-![](precip.png)
+![](precip.png){width="10cm"}
