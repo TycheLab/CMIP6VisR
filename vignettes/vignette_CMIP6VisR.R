@@ -9,18 +9,17 @@ knitr::opts_chunk$set(eval = TRUE,
 library(CMIP6VisR)
 library(terra)
 
+## -----------------------------------------------------------------------------
+# Read the shapefile containing the basin
+fpath <- system.file("extdata", "07BF001.shp", package = "CMIP6VisR")
+basin_vector <- vect(fpath)
+plot(basin_vector)
+
 ## ----warning=FALSE------------------------------------------------------------
 # convert the dataframe of zones to raster (built-in the package)
 zone_area_grid <- cv_zone_area_raster() 
 
-
-# Read the required shapefile
-fpath <- system.file("extdata", "07BF001.shp", package = "CMIP6VisR")
-basin_vector <- vect(fpath)
-
-
 req_data <- cv_clip_basin(zone_area_grid, basin_vector)
-
 
 # printing the zones that are required for the targeted area
 print(req_data[["zone"]])
@@ -37,7 +36,7 @@ terra::plot(raster_list[[2]], main = expression("Zone 7, Grid Areas in " ~ km^2)
 merged_raster <- do.call(terra::merge, req_data$raster)
 
 # Plot the merged raster
-terra::plot(merged_raster, main = expression("All zones, Grid Areas in " ~ km^2))
+terra::plot(merged_raster, main = expression("Both zones, Grid Areas in " ~ km^2))
 
 
 ## ----eval=FALSE---------------------------------------------------------------

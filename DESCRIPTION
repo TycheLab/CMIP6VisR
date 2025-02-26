@@ -13,7 +13,7 @@ Authors@R: c(person("Simon Michael", "Papalexiou",
                       role = c("ctb", "cre"),
                       email = "kshook@kshook.ca")
               )
-Description: Data manipulation for CMIP6 hydroclimatic data. The files are archived in the Federated Research Data Repository (FRDR; https://doi.org/10.20383/103.0829). The data set is described in Abdelmoaty et al., (2025 <https://doi.org/10.1038/s41597-025-04396-z>)
+Description: Data manipulation for CMIP6 hydroclimatic data. The files are archived in the Federated Research Data Repository (FRDR; <doi:10.20383/103.0829>). The data set is described in Abdelmoaty et al. (2025, <doi:10.1038/s41597-025-04396-z>).
 Depends: R (>= 3.5.0)
 Imports:
     terra,
