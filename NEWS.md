@@ -1,6 +1,6 @@
 
 
-CMIP6VisR v1.0.0 (Release date: 2025-02-25)
+CMIP6VisR v1.0.0 (Release date: 2025-02-26)
 ================
 
 First release

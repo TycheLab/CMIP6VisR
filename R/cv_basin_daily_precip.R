@@ -32,6 +32,8 @@
 #' @export
 #'
 #' @examples \donttest{
+#' # This function is marked to not be tested as it requires local copies of the CMIP6 data files
+#' # which are many GB in size
 #' library(terra)
 #' az_raster <- cv_zone_area_raster()
 #' fpath <- system.file("extdata", "07BF001.shp", package = "CMIP6VisR")

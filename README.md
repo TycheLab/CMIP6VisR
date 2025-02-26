@@ -5,14 +5,14 @@ README
 
 ## Visualization and Analysis of CMIP6 Hydroclimatic Data
 
-CMIP6VisR is an R package that facilitates the usage of the
+CMIP6VisR  facilitates the use of the
 bias-corrected dataset for CMIP6 projections of daily average
 temperature and total precipitation, SPQM-CMIP6-CAN (Abdelmoaty et al.,
-2025). This dataset is designed for operational applications, preserving
+2025 <https://doi.org/10.1038/s41597-025-04396-z>). This dataset is designed for operational applications, preserving
 key statistical properties, including observed marginal properties,
 trends, and variability while enabling a smooth transition from
 historical observations to future projections. The package allows users
-to identify and download relevant dataset files covering their target
+to identify the relevant data files covering their target
 region or basin. Additionally, it provides grid area information and
 enables the estimation of area-weighted average precipitation time
 series derived from the bias-corrected product.
@@ -69,7 +69,7 @@ program, University of Saskatchewan.
 ## Authors
 
 Coded by: Kevin Shook, Konstantinos Andreadis, and Heba Abdelmoaty
-Conceptual design by: Simon Michael Papalexiou Maintained by: Kevin
+Conceptual design by Simon Michael Papalexiou. Maintained by: Kevin
 Shook
 
 ## References
