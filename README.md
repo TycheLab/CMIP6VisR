@@ -23,7 +23,7 @@ Copy and paste to get the latest version of CMIP6VisR directly
 
 `if (!require('devtools')) {install.packages('devtools'); library(devtools)} `
 `install_github('TycheLab/CMIP6VisR', upgrade = 'never')`
-`library(CMIP6VisR)`
+
 
 ## Funding
 
