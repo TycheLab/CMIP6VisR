@@ -19,46 +19,11 @@ series derived from the bias-corrected product.
 
 ## Install
 
-``` r
-## copy-paste to get the latest version of CMIP6VisR
+Copy and paste to get the latest version of CMIP6VisR directly 
 
-if (!require('devtools')) {install.packages('devtools'); library(devtools)} 
-```
-
-    ## Loading required package: devtools
-
-    ## Warning: package 'devtools' was built under R version 4.3.3
-
-    ## Loading required package: usethis
-
-    ## Warning: package 'usethis' was built under R version 4.3.3
-
-``` r
-install_github('TycheLab/CMIP6VisR', upgrade = 'never')
-```
-
-    ## Using GitHub PAT from the git credential store.
-
-    ## Downloading GitHub repo TycheLab/CMIP6VisR@HEAD
-
-    ## ── R CMD build ─────────────────────────────────────────────────────────────────
-    ##          checking for file 'C:\Users\hebam\AppData\Local\Temp\RtmpukUjz7\remotes45606caf3c4b\TycheLab-CMIP6VisR-f293379eea92899dd5ddd8d9fa11f21c6f9cda95/DESCRIPTION' ...     checking for file 'C:\Users\hebam\AppData\Local\Temp\RtmpukUjz7\remotes45606caf3c4b\TycheLab-CMIP6VisR-f293379eea92899dd5ddd8d9fa11f21c6f9cda95/DESCRIPTION' ...   ✔  checking for file 'C:\Users\hebam\AppData\Local\Temp\RtmpukUjz7\remotes45606caf3c4b\TycheLab-CMIP6VisR-f293379eea92899dd5ddd8d9fa11f21c6f9cda95/DESCRIPTION'
-    ##       ─  preparing 'CMIP6VisR':
-    ##    checking DESCRIPTION meta-information ...     checking DESCRIPTION meta-information ...   ✔  checking DESCRIPTION meta-information
-    ##       ─  checking for LF line-endings in source and make files and shell scripts
-    ##   ─  checking for empty or unneeded directories
-    ##       ─  building 'CMIP6VisR_1.0.0.tar.gz'
-    ##      
-    ## 
-
-    ## Installing package into 'C:/Users/hebam/AppData/Local/Temp/RtmpiQAUFN/temp_libpath3f7c50ed7d5a'
-    ## (as 'lib' is unspecified)
-
-``` r
-library(CMIP6VisR)
-
-?`CMIP6VisR-package`
-```
+`if (!require('devtools')) {install.packages('devtools'); library(devtools)} `
+`install_github('TycheLab/CMIP6VisR', upgrade = 'never')`
+`library(CMIP6VisR)`
 
 ## Funding
 
@@ -70,7 +35,7 @@ program, University of Saskatchewan.
 
 Coded by: Kevin Shook, Konstantinos Andreadis, and Heba Abdelmoaty
 Conceptual design by Simon Michael Papalexiou. Maintained by: Kevin
-Shook
+Shook.
 
 ## References
 
