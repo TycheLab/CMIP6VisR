@@ -2,7 +2,7 @@ Package: CMIP6VisR
 Type: Package
 Title: Visualization and Analysis of Coupled Model Intercomparison Project, Phase-6 (CMIP6) Hydroclimatic Data
 Version: 1.0.0
-Date: 2025-02-26
+Date: 2025-02-27
 Authors@R: c(person("Simon Michael", "Papalexiou", 
                       role = "aut"),
              person("Heba", "Abdelmoaty", 
