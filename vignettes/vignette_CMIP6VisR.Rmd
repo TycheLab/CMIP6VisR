@@ -149,3 +149,41 @@ plot(values)
 ```
 
 ![](precip.png){width="10cm"}
+
+## Visualization functions
+
+we introduce three essential functions used to generate precipitation time series, seasonal and monthly precipitation distributions, and probability exceedance plots. 
+
+0. Load the data. 
+This data should be in dataframe format that contains two columns, named "date" and "precipitation"
+
+```{r}
+fpath_df <- system.file("eg_TS.rds", package = "CMIP6VisR")
+data <- readRDS(fpath_df)
+colnames(data) <- c("date", "precipitation")
+```
+
+1. Precipitation Time Series
+For analyzing precipitation trends over long periods, a time series plot is used. This visualization enables an understanding of interannual variability and extreme precipitation events over time.
+
+```{r}
+cv_TS(data)
+```
+
+2. Seasonal and Monthly Precipitation Distribution
+To analyze precipitation variations across seasons and months, the following function is used. These plots highlight seasonal trends and monthly variations in precipitation data.
+
+```{r}
+cv_SeasMon(data)
+```
+
+
+3. Probability of Exceedance Plot
+The probability of exceedance plot is a critical tool for assessing extreme precipitation events. This plot is generated using the following function. This function sorts the precipitation data in descending order and calculates exceedance probabilities. The log-scale for probability ensures better visualization of extreme events.
+
+```{r}
+
+cv_prob(data)
+```
+
+
