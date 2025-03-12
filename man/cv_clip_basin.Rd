@@ -7,20 +7,24 @@
 cv_clip_basin(za_rast, basin)
 }
 \arguments{
-\item{za_rast}{\code{SpatRaster} of the zones and areas}
+\item{za_rast}{\code{SpatRaster} of the zones and areas.}
 
-\item{basin}{\code{SpatVector} of the basin to clip to}
+\item{basin}{\code{SpatVector} of the basin to clip to.}
 }
 \value{
-Returns a list with 3 elements: 1) \code{raster} (rasters of cell areas for each zone),
-2) \code{area} total area of each zone in the basin, and 3) \code{zone} zone numbers.
+Returns a list with 3 elements:
+\itemize{
+\item \code{raster} (rasters of cell areas for each zone).
+\item \code{area} (total area of each zone in the basin).
+\item \code{zone} (zone numbers).
+}
 }
 \description{
 Takes the \code{SpatRaster} that represents zones and areas and
-clips them from polygon \code{basin}
+clips them from polygon \code{basin}.
 }
 \examples{
-{
+\dontrun{
 library(terra)
 az_raster <- cv_zone_area_raster()
 fpath <- system.file("extdata", "07BF001.shp", package = "CMIP6VisR")
