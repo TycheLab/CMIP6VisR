@@ -9,19 +9,17 @@
 #' @return A ggplot object displaying the seasonal distribution of nonzero precipitation, 
 #'         with mean values and P0 labeled.
 #' @examples
-#' \dontrun{
-#' data <- readRDS("data/eg_TS.rds")
-#' colnames(data) <- c("date", "precipitation")
-#' cv_SeasMon(data)
+#' file_path <- system.file("extdata", "eg_TS.rds", package = "CMIP6VisR")
+#' data <- readRDS(file_path)
+#' cv_plot_season(data)
 #' #recommended save size
 #' gggsave("plot_seasALL.jpg", height = 14, width = 16.5, units = "cm", dpi = 400)
-#' }
 #' @import ggplot2
 #' @import dplyr
 #' @importFrom lubridate month
 #' @importFrom ggpubr ggarrange
 #' @export
-cv_SeasMon <- function(data) {
+cv_plot_season <- function(data) {
   
   
   # Ensure correct column names

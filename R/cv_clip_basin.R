@@ -35,8 +35,14 @@ cv_clip_basin <- function(za_rast, basin) {
   zones <- terra::subset(result, 1)
   areas <- terra::subset(result, 2)
   
+  # Ensure zones is a vector before applying unique()
+  zone_values <- terra::values(zones)  # Extract numeric values from raster
+  zone_values <- na.omit(zone_values)  # Remove NA values
+  zone_values <- unique(zone_values)   # Get unique zone numbers
+  
+  # Apply unique() safely
   rasts <- lapply(
-    unique(zones)[[1]],
+    zone_values,
     function(v) {
       terra::trim(terra::mask(areas, zones, maskvalues = v, inverse = TRUE))
     }
@@ -46,5 +52,5 @@ cv_clip_basin <- function(za_rast, basin) {
     sum(terra::values(r), na.rm = TRUE)
   })
   
-  return(list(raster = rasts, area = total_areas, zone = unique(zones)[[1]]))
+  return(list(raster = rasts, area = total_areas, zone = zone_values))
 }
