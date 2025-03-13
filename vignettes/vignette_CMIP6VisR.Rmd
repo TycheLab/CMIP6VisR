@@ -158,23 +158,21 @@ we introduce three essential functions used to generate precipitation time serie
 This data should be in dataframe format that contains two columns, named "date" and "precipitation"
 
 ```{r}
-fpath_df <- system.file("extdata", "eg_TS.rds", package = "CMIP6VisR")
-data <- readRDS(fpath_df)
-colnames(data) <- c("date", "precipitation")
+data("eg_TS")
 ```
 
 1. Precipitation Time Series
 For analyzing precipitation trends over long periods, a time series plot is used. This visualization enables an understanding of interannual variability and extreme precipitation events over time.
 
 ```{r}
-cv_plot_TS(data)
+cv_plot_TS(eg_TS)
 ```
 
 2. Seasonal and Monthly Precipitation Distribution
 To analyze precipitation variations across seasons and months, the following function is used. These plots highlight seasonal trends and monthly variations in precipitation data.
 
 ```{r}
-cv_plot_season(data)
+cv_plot_season(eg_TS)
 ```
 
 
@@ -183,7 +181,7 @@ The probability of exceedance plot is a critical tool for assessing extreme prec
 
 ```{r}
 
-cv_plot_prob(data)
+cv_plot_prob(eg_TS)
 ```
 
 

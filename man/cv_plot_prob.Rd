@@ -12,6 +12,8 @@ cv_plot_prob(data)
 }
 \value{
 A ggplot object displaying the probability of exceedance of nonzero precipitation.
+Note: The recommended aspect ratio and size for saving the plots,
+based on the dimensions specified in the plot function, are a width of 16.5 cm and a height of 12 cm.
 }
 \description{
 This function takes a data frame containing a precipitation time series,
@@ -20,10 +22,6 @@ and generates a scatter plot with a logarithmic y-axis.
 }
 \examples{
 # Load example data from the package
-file_path <- system.file("extdata", "eg_TS.rds", package = "CMIP6VisR")
-data <- readRDS(file_path)
-colnames(data) <- c("date", "precipitation")
-cv_plot_prob(data)
-# Recommended save size
-ggsave("plot_prob.jpg", height = 12, width = 16.5, units = "cm", dpi = 400)
+data("eg_TS")
+cv_plot_prob(eg_TS)
 }

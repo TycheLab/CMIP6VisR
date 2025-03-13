@@ -12,7 +12,8 @@ cv_plot_season(data)
 }
 \value{
 A ggplot object displaying the seasonal distribution of nonzero precipitation,
-with mean values and P0 labeled.
+with mean values and P0 labeled. Note: The recommended aspect ratio and size for saving the plots,
+based on the dimensions specified in the plot function, are a width of 16.5 cm and a height of 14 cm.
 }
 \description{
 This function takes a data frame with a precipitation time series, assigns seasons based on months,
@@ -20,9 +21,6 @@ computes the proportion of zero precipitation values (P0) and seasonal means for
 and generates a violin plot showing the seasonal distribution of precipitation.
 }
 \examples{
-file_path <- system.file("extdata", "eg_TS.rds", package = "CMIP6VisR")
-data <- readRDS(file_path)
-cv_plot_season(data)
-#recommended save size
-gggsave("plot_seasALL.jpg", height = 14, width = 16.5, units = "cm", dpi = 400)
+data("eg_TS")
+cv_plot_season(eg_TS)
 }

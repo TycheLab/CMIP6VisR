@@ -12,6 +12,8 @@ cv_plot_TS(data)
 }
 \value{
 A ggplot object displaying the precipitation time series with summary statistics in the title.
+Note: The recommended aspect ratio and size for saving the plots,
+based on the dimensions specified in the plot function, are a width of 16.5 cm and a height of 6 cm.
 }
 \description{
 This function takes a data frame containing a precipitation time series,
@@ -19,9 +21,6 @@ calculates basic statistics (mean, standard deviation, and proportion of zero va
 and generates a ggplot visualization.
 }
 \examples{
-file_path <- system.file("extdata", "eg_TS.rds", package = "CMIP6VisR")
-data <- readRDS(file_path)
-cv_plot_TS(data)
-#Recommended save size
-ggsave("plot_TS.jpg", height = 6, width = 16.5, units = "cm", dpi = 400)
+data("eg_TS")
+cv_plot_TS(eg_TS)
 }

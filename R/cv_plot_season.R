@@ -7,19 +7,19 @@
 #' @param data A data frame with two columns: "date" (date or datetime) and 
 #'             "precipitation" (numeric).
 #' @return A ggplot object displaying the seasonal distribution of nonzero precipitation, 
-#'         with mean values and P0 labeled.
+#'         with mean values and P0 labeled. Note: The recommended aspect ratio and size for saving the plots,
+#'          based on the dimensions specified in the plot function, are a width of 16.5 cm and a height of 14 cm. 
 #' @examples
-#' file_path <- system.file("extdata", "eg_TS.rds", package = "CMIP6VisR")
-#' data <- readRDS(file_path)
-#' cv_plot_season(data)
-#' #recommended save size
-#' gggsave("plot_seasALL.jpg", height = 14, width = 16.5, units = "cm", dpi = 400)
+#' data("eg_TS")
+#' cv_plot_season(eg_TS)
 #' @import ggplot2
-#' @import dplyr
+#' @importFrom dplyr filter summarize mutate group_by
 #' @importFrom lubridate month
 #' @importFrom ggpubr ggarrange
 #' @export
 cv_plot_season <- function(data) {
+  
+  precipitation <- season <- mean_val <- p0 <- tot_val <- NULL
   
   
   # Ensure correct column names
@@ -28,9 +28,9 @@ cv_plot_season <- function(data) {
   }
   
   # Extract month and assign seasons
-  data$month <- lubridate::month(data$date)
+  data$month <- month(data$date)
   data <- data %>% 
-    dplyr::mutate(season = case_when(
+    mutate(season = case_when(
       month %in% c(9, 10, 11) ~ "Fall",
       month %in% c(12, 1, 2) ~ "Winter",
       month %in% c(3, 4, 5) ~ "Spring",
@@ -39,21 +39,21 @@ cv_plot_season <- function(data) {
   
   # Compute proportion of zero precipitation (P0)
   p0_seas <- data %>% 
-    dplyr::group_by(season) %>% 
-    dplyr::summarise(p0 = sum(precipitation == 0, na.rm = TRUE) / n())
+    group_by(season) %>% 
+    summarise(p0 = sum(precipitation == 0, na.rm = TRUE) / n())
   
   # Filter out zero precipitation values
-  data_nz <- data %>% dplyr::filter(precipitation != 0)
+  data_nz <- data %>% filter(precipitation != 0)
   
   # Compute seasonal mean for nonzero precipitation
   mean_seas <- data_nz %>% 
-    dplyr::group_by(season) %>% 
-    dplyr::summarise(mean_val = mean(precipitation, na.rm = TRUE))
+    group_by(season) %>% 
+    summarise(mean_val = mean(precipitation, na.rm = TRUE))
   
   # Compute seasonal mean for nonzero precipitation
   tot_mon <- data_nz %>% 
-    dplyr::group_by(month) %>% 
-    dplyr::summarise(tot_val = sum(precipitation, na.rm = TRUE))
+    group_by(month) %>% 
+    summarise(tot_val = sum(precipitation, na.rm = TRUE))
   
   # Generate plot
   plot1 <- ggplot() + 
@@ -71,22 +71,22 @@ cv_plot_season <- function(data) {
     xlab("Season") +
     theme(
       legend.text = element_text(size = 7),
-      axis.title.x = element_text(size = 9, colour = gray(0.25)),
-      axis.title.y = element_text(size = 9, colour = gray(0.25)),
+      axis.title.x = element_text(size = 9, colour = "gray25"),
+      axis.title.y = element_text(size = 9, colour = "gray25"),
       legend.title = element_blank(),
       panel.grid = element_blank(),
       panel.background = element_rect(fill = "white"),
       panel.grid.minor = element_blank(),
       panel.grid.major = element_blank(),
       panel.border = element_blank(),
-      axis.line = element_line(color = gray(0.25), size = 0.3),
-      axis.text.x = element_text(size = 8, colour = gray(0.25)),
-      axis.text.y = element_text(size = 8, colour = gray(0.25)),
+      axis.line = element_line(color = "gray25", size = 0.3),
+      axis.text.x = element_text(size = 8, colour = "gray25"),
+      axis.text.y = element_text(size = 8, colour = "gray25"),
       plot.title = element_text(hjust = 0),
       plot.margin = unit(c(3,3,0.5,0.5), "mm"),
       axis.ticks.length.x = unit(-0.5, "mm"),
       axis.ticks.length.y = unit(-0.5, "mm"),
-      axis.ticks = element_line(color = gray(0.25), size = 0.3),
+      axis.ticks = element_line(color = "gray25", size = 0.3),
       legend.position = 'none',
       legend.spacing.x = unit(3.5, "mm"),
       legend.spacing.y = unit(0.1, "mm"),
@@ -94,7 +94,7 @@ cv_plot_season <- function(data) {
       legend.key.size = unit(3, "mm"),
       legend.key.width = unit(3, "mm"),
       legend.key = element_rect(fill = "transparent"),
-      text = element_text(color = gray(0.25)),
+      text = element_text(color = "gray25"),
       legend.box.margin = margin(0.5, 0.5, 0.5, 0.5)
     )
   plot1
@@ -106,22 +106,22 @@ cv_plot_season <- function(data) {
     xlab("Month") +
     theme(
       legend.text = element_text(size = 7),
-      axis.title.x = element_text(size = 9, colour = gray(0.25)),
-      axis.title.y = element_text(size = 9, colour = gray(0.25)),
+      axis.title.x = element_text(size = 9, colour = "gray25"),
+      axis.title.y = element_text(size = 9, colour = "gray25"),
       legend.title = element_blank(),
       panel.grid = element_blank(),
       panel.background = element_rect(fill = "white"),
       panel.grid.minor = element_blank(),
       panel.grid.major = element_blank(),
       panel.border = element_blank(),
-      axis.line = element_line(color = gray(0.25), size = 0.3),
-      axis.text.x = element_text(size = 8, colour = gray(0.25)),
-      axis.text.y = element_text(size = 8, colour = gray(0.25)),
+      axis.line = element_line(color = "gray25", size = 0.3),
+      axis.text.x = element_text(size = 8, colour = "gray25"),
+      axis.text.y = element_text(size = 8, colour = "gray25"),
       plot.title = element_text(hjust = 0),
       plot.margin = unit(c(3,3,0.5,0.5), "mm"),
       axis.ticks.length.x = unit(-0.5, "mm"),
       axis.ticks.length.y = unit(-0.5, "mm"),
-      axis.ticks = element_line(color = gray(0.25), size = 0.3),
+      axis.ticks = element_line(color = "gray25", size = 0.3),
       legend.position = 'none',
       legend.spacing.x = unit(3.5, "mm"),
       legend.spacing.y = unit(0.1, "mm"),
@@ -129,12 +129,12 @@ cv_plot_season <- function(data) {
       legend.key.size = unit(3, "mm"),
       legend.key.width = unit(3, "mm"),
       legend.key = element_rect(fill = "transparent"),
-      text = element_text(color = gray(0.25)),
+      text = element_text(color = "gray25"),
       legend.box.margin = margin(0.5, 0.5, 0.5, 0.5)
     )
   plot2
   
-  gg <- ggpubr::ggarrange(plot1, plot2, nrow = 2, ncol = 1)
+  gg <- ggarrange(plot1, plot2, nrow = 2, ncol = 1)
   return(gg)
 }
 
