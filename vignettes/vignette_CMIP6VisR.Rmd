@@ -129,8 +129,7 @@ The function `cv_basin_daily_precip` has several parameters:
 2. *scenario* the scenario argument which indicates the name of the simulation (the part of the string that is before the zone number). For example: "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_"
 3. *basin_zone_area*: the output resulting from `cv_clip_basin` getting the grid area information of the target basin. 
 4. *temp_file*: if `FALSE` (the default), the function tries to complete all operations in memory, 
-which is relatively fast. However, if you are using a very large basin, then you might run of memory.
-In this case, you need to specify `temp_file = TRUE`.
+which is relatively fast. However, if you are using a very large basin, then you might run of memory. In that case, you would need to specify `temp_file = TRUE`.
 
 The function uses the areas for each cell to weight the precipitation from the NetCDF file(s).
 
@@ -147,7 +146,7 @@ data("eg_TS")
 values = eg_TS
 ```
 
-This data should be in dataframe format that contains two columns, named "date" and "precipitation"
+This data should be in a data frame containing two columns, named "date" and "precipitation".
 
 ```{r}
 head(values)
@@ -156,19 +155,22 @@ head(values)
 
 ## Visualization functions
 
-we introduce three visualization functions used to generate precipitation time series, seasonal and monthly precipitation distributions, and probability exceedance plots. 
-
+The visualization functions are used to generate precipitation time series, seasonal and monthly precipitation distributions, and probability exceedance plots. All functions returns a `ggplot2` object which can be altered.
 
 
 1. Precipitation Time Series
-For analyzing precipitation trends over long periods, a time series plot is used. This visualization enables an understanding of interannual variability and extreme precipitation events over time.
+For analyzing precipitation trends over long periods, a time series plot is used. This visualization enables an understanding of interannual variability and extreme precipitation events over time. The mean, standard deviation and p0 (probability of zero values) are
+listed in the title. 
 
 ```{r}
 cv_plot_TS(values)
 ```
 
 2. Seasonal and Monthly Precipitation Distribution
-To analyze precipitation variations across seasons and months, the following function is used. These plots highlight seasonal trends and monthly variations in precipitation data.
+The function `cv_plot_season` is useful to analyze precipitation variations across seasons and months. The functio returns a plot with two sub-plots:
+
+1. violin plots of the seasonal mean nonzero precipitation, with the coorresponding p0 value displayed, and
+2. a bar graph of the total precipitation by month.
 
 ```{r}
 cv_plot_season(values)
@@ -176,10 +178,10 @@ cv_plot_season(values)
 
 
 3. Probability of Exceedance Plot
-The probability of exceedance plot is a critical tool for assessing extreme precipitation events. This plot is generated using the following function. This function sorts the precipitation data in descending order and calculates exceedance probabilities. The log-scale for probability ensures better visualization of extreme events.
+The probability of exceedance plot is useful for assessing extreme precipitation events. The precipitation data are sorted in descending order and the the exceedance probabilities
+are calculated from the rankings. The log-scale for probability ensures better visualization of extreme events.
 
 ```{r}
-
 cv_plot_prob(values)
 ```
 

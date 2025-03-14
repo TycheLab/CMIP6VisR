@@ -1,14 +1,14 @@
-#' Plot Probability of Exceedance for Precipitation
+#' Plot probability of exceedance for precipitation
 #'
-#' This function takes a data frame containing a precipitation time series, 
-#' filters out zero precipitation values, calculates the probability of exceedance, 
-#' and generates a scatter plot with a logarithmic y-axis.
+#' Plots the exceedance probabilities of non-zero values in a precipitation time 
+#' series as returned by `cv_basin_daily_precip()`, vs the precipitation value. 
+#' Uses a logarithmic scale for the y-axis.
 #'
-#' @param data A data frame with two columns: "date" (date or datetime) and 
-#'             "precipitation" (numeric).
-#' @return A ggplot object displaying the probability of exceedance of nonzero precipitation.
-#'          The returned plots look best when saved at the size 16.5 x 12 cm.
-#'          You can easily change the font sizes using theme().
+#' @param data A data frame with two columns: \code{date} (date or datetime) and  
+#' \code{precipitation} (numeric) as returned by `cv_basin_daily_precip()`.
+#' @return A ggplot object displaying the probability of exceedance of nonzero 
+#' precipitation. The returned plots look best when saved at the size 
+#' 16.5 x 12 cm. You can easily change the font sizes using theme().
 #' @examples
 #' cv_plot_prob(eg_TS)
 #' @import ggplot2
@@ -16,6 +16,8 @@
 #' @import lubridate
 #' @import scales
 #' @export
+#' @seealso \code{\link{cv_basin_daily_precip}} \code{\link{cv_plot_TS}} \code{\link{cv_plot_season}}
+
 cv_plot_prob <- function(data) {
   
   precipitation <- p_e <- NULL
@@ -28,7 +30,7 @@ cv_plot_prob <- function(data) {
   # Filter out zero precipitation values
   data_nz <- data %>% filter(precipitation != 0)
   
-  # Calculate probability of exceedance
+  # Calculate probability of exceedance using the 
   data_nz$rank <- rank(data_nz$precipitation)
   data_nz$p_ne <- data_nz$rank / (nrow(data_nz) + 1)
   data_nz$p_e <- 1 - data_nz$p_ne

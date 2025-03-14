@@ -9,7 +9,7 @@
 #' @returns Returns a \pkg{terra} \code{SpatRaster} object (415 rows x 883 columns x 2 layers) of all Canadian grid locations.
 #' @export
 #' @importFrom terra rast
-#' @author Heba Abdelmoaty Kevin SHook
+#' @author Heba Abdelmoaty Kevin Shook
 
 #' @examples
 #' zone_area_grid <- cv_zone_area_raster()

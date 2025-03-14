@@ -1,26 +1,26 @@
-#' Plot Seasonal Precipitation Distribution
-#'
-#' This function takes a data frame with a precipitation time series, assigns seasons based on months, 
+#' Plot seasonal precipitation distribution
+#' @description
+#' Creates seasonal plots of a precipitation time series, as returned by `cv_basin_daily_precip()`. Assigns seasons based on the month, 
 #' computes the proportion of zero precipitation values (P0) and seasonal means for nonzero precipitation, 
 #' and generates a violin plot showing the seasonal distribution of precipitation.
 #'
-#' @param data A data frame with two columns: "date" (date or datetime) and 
-#'             "precipitation" (numeric).
+#' @param data A data frame with two columns: \code{date} (date or datetime) and  
+#' \code{precipitation} (numeric) as returned by `cv_basin_daily_precip()`.
 #' @return A ggplot object displaying the seasonal distribution of nonzero precipitation, 
-#'         with mean values and P0 labeled. 
-#'          The returned plots look best when saved at the size 16.5 x 14 cm.
-#'          You can easily change the font sizes using theme().
+#' with mean values and P0 labelled. The returned plots look best when saved at 
+#' the size 16.5 x 14 cm. You can easily change the font sizes using theme().
 #' @examples
 #' cv_plot_season(eg_TS)
 #' @import ggplot2
 #' @importFrom dplyr filter summarize mutate group_by
 #' @importFrom lubridate month
 #' @importFrom ggpubr ggarrange
+#' @seealso \code{\link{cv_basin_daily_precip}} \code{\link{cv_plot_TS}} \code{\link{cv_plot_prob}}
+
 #' @export
+#' 
 cv_plot_season <- function(data) {
-  
   precipitation <- season <- mean_val <- p0 <- tot_val <- NULL
-  
   
   # Ensure correct column names
   if (!all(c("date", "precipitation") %in% colnames(data))) {

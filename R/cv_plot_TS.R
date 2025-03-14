@@ -1,18 +1,19 @@
-#' Plot Precipitation Time Series
+#' Plot precipitation time series
 #'
-#' This function takes a data frame containing a precipitation time series, 
-#' calculates basic statistics (mean, standard deviation, and proportion of zero values),
-#' and generates a ggplot visualization.
+#' Creates a time series plot from a data frame of precipitation data 
+#' as returned by `cv_basin_daily_precip()`. Basic statistics (mean, standard deviation, and proportion of zero values),
+#' are added to the title of the plot.
 #'
-#' @param data A data frame with two columns: "date" (date or datetime) and 
-#'             "precipitation" (numeric).
-#' @return A ggplot object displaying the precipitation time series with summary statistics in the title.
-#'          The returned plots look best when saved at the size 16.5 x 6 cm.
-#'          You can easily change the font sizes using theme().
+#' @param data A data frame with two columns: \code{date} (date or datetime) and  
+#' \code{precipitation} (numeric) as returned by `cv_basin_daily_precip()`.
+#' @return A ggplot object displaying the precipitation time series with summary 
+#' statistics in the title. The returned plots look best when saved at the size 
+#' 16.5 x 6 cm You can easily change the font sizes using theme().
 #' @examples
 #' cv_plot_TS(eg_TS)
 #' @import ggplot2
 #' @importFrom stats sd
+#' @seealso \code{\link{cv_basin_daily_precip}} \code{\link{cv_plot_prob}} \code{\link{cv_plot_season}}
 #' @export
 cv_plot_TS <- function(data) {
   
