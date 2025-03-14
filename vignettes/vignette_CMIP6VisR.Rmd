@@ -142,37 +142,36 @@ values <- cv_basin_daily_precip(netcdf_directory = "./data/",
 ```
 
 
-Plot the basin daily precipitation values for the basin
-
-```{r, eval=FALSE}
-plot(values)
+```{r, include=FALSE}
+data("eg_TS")
+values = eg_TS
 ```
 
-![](precip.png){width="10cm"}
-
-## Visualization functions
-
-we introduce three essential functions used to generate precipitation time series, seasonal and monthly precipitation distributions, and probability exceedance plots. 
-
-0. Load the data. 
 This data should be in dataframe format that contains two columns, named "date" and "precipitation"
 
 ```{r}
-data("eg_TS")
+head(values)
 ```
+
+
+## Visualization functions
+
+we introduce three visualization functions used to generate precipitation time series, seasonal and monthly precipitation distributions, and probability exceedance plots. 
+
+
 
 1. Precipitation Time Series
 For analyzing precipitation trends over long periods, a time series plot is used. This visualization enables an understanding of interannual variability and extreme precipitation events over time.
 
 ```{r}
-cv_plot_TS(eg_TS)
+cv_plot_TS(values)
 ```
 
 2. Seasonal and Monthly Precipitation Distribution
 To analyze precipitation variations across seasons and months, the following function is used. These plots highlight seasonal trends and monthly variations in precipitation data.
 
 ```{r}
-cv_plot_season(eg_TS)
+cv_plot_season(values)
 ```
 
 
@@ -181,7 +180,7 @@ The probability of exceedance plot is a critical tool for assessing extreme prec
 
 ```{r}
 
-cv_plot_prob(eg_TS)
+cv_plot_prob(values)
 ```
 
 

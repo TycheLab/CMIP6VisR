@@ -7,10 +7,10 @@
 #' @param data A data frame with two columns: "date" (date or datetime) and 
 #'             "precipitation" (numeric).
 #' @return A ggplot object displaying the seasonal distribution of nonzero precipitation, 
-#'         with mean values and P0 labeled. Note: The recommended aspect ratio and size for saving the plots,
-#'          based on the dimensions specified in the plot function, are a width of 16.5 cm and a height of 14 cm. 
+#'         with mean values and P0 labeled. 
+#'          The returned plots look best when saved at the size 16.5 x 14 cm.
+#'          You can easily change the font sizes using theme().
 #' @examples
-#' data("eg_TS")
 #' cv_plot_season(eg_TS)
 #' @import ggplot2
 #' @importFrom dplyr filter summarize mutate group_by

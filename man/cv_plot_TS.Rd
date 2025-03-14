@@ -12,8 +12,8 @@ cv_plot_TS(data)
 }
 \value{
 A ggplot object displaying the precipitation time series with summary statistics in the title.
-Note: The recommended aspect ratio and size for saving the plots,
-based on the dimensions specified in the plot function, are a width of 16.5 cm and a height of 6 cm.
+The returned plots look best when saved at the size 16.5 x 6 cm.
+You can easily change the font sizes using theme().
 }
 \description{
 This function takes a data frame containing a precipitation time series,
@@ -21,6 +21,5 @@ calculates basic statistics (mean, standard deviation, and proportion of zero va
 and generates a ggplot visualization.
 }
 \examples{
-data("eg_TS")
 cv_plot_TS(eg_TS)
 }

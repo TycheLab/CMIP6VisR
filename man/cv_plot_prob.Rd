@@ -12,8 +12,8 @@ cv_plot_prob(data)
 }
 \value{
 A ggplot object displaying the probability of exceedance of nonzero precipitation.
-Note: The recommended aspect ratio and size for saving the plots,
-based on the dimensions specified in the plot function, are a width of 16.5 cm and a height of 12 cm.
+The returned plots look best when saved at the size 16.5 x 12 cm.
+You can easily change the font sizes using theme().
 }
 \description{
 This function takes a data frame containing a precipitation time series,
@@ -21,7 +21,5 @@ filters out zero precipitation values, calculates the probability of exceedance,
 and generates a scatter plot with a logarithmic y-axis.
 }
 \examples{
-# Load example data from the package
-data("eg_TS")
 cv_plot_prob(eg_TS)
 }
