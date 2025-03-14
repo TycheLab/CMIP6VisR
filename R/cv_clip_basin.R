@@ -9,7 +9,9 @@
 #' @param za_rast \code{SpatRaster} of the zones and areas.
 #' @param basin \code{SpatVector} of the basin to clip to.
 #'
-#' @importFrom terra crop mask trim subset values
+#' @importFrom terra crop mask trim subset values vect
+#' @importFrom stats na.omit
+
 #' @export
 #'
 #' @return Returns a list with 3 elements:
