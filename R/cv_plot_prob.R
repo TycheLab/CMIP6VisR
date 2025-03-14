@@ -7,11 +7,9 @@
 #' @param data A data frame with two columns: "date" (date or datetime) and 
 #'             "precipitation" (numeric).
 #' @return A ggplot object displaying the probability of exceedance of nonzero precipitation.
-#'          Note: The recommended aspect ratio and size for saving the plots,
-#'          based on the dimensions specified in the plot function, are a width of 16.5 cm and a height of 12 cm.
+#'          The returned plots look best when saved at the size 16.5 x 12 cm.
+#'          You can easily change the font sizes using theme().
 #' @examples
-#' # Load example data from the package
-#' data("eg_TS")
 #' cv_plot_prob(eg_TS)
 #' @import ggplot2
 #' @import dplyr
