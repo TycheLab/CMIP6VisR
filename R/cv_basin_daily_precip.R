@@ -104,15 +104,15 @@ cv_basin_daily_precip <- function(netcdf_directory = ".",
    # first, crop netcdf to extent of area raster
    
    if (!temp_file) {
-     cropped <- crop(r, area_raster, mask = TRUE)
-     weighted_precip <- global(cropped, 
+     cropped <- terra::crop(r, area_raster, mask = TRUE)
+     weighted_precip <- terra::global(cropped, 
                              fun = "mean", 
                              weights = area_raster, 
                              na.rm = TRUE)
     } else{
     crop_file <- tempfile(pattern = "file", tmpdir = tempdir(), fileext = ".tif")
-    cropped <- crop(r, area_raster, mask = TRUE, filename = crop_file)
-    weighted_precip <- global(cropped, 
+    cropped <- terra::crop(r, area_raster, mask = TRUE, filename = crop_file)
+    weighted_precip <- terra::global(cropped, 
                               fun = "mean", 
                               weights = area_raster)
     weighted_precip <- weighted_precip * weightings[i]
