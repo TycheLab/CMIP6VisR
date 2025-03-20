@@ -1,11 +1,10 @@
 #' Extracts daily precipitation for a specific location
 #' 
 #' @description
-#' Extracts a daily time series from a single CMIP6 raster location. The location
+#' Extracts a daily time series from a single CMIP6 raster location, which can
+#' be used to compare the CMIP6 values against station values. The location
 #' of the data in the CMIP6 data (its zone and raster location) is found using 
 #' \code{cv_find_point}. 
-#' 
-#'
 #' @param precip_file_name Required. String containing the name of the NetCDF 
 #' file with the CMIP6 daily precipitation, including the file path.
 #' @param grid_lon Required. Longitude of precipitation grid containing the location,
@@ -27,6 +26,8 @@
 #' point_long <- -110.456
 #' point_lat <- 52.19
 #' point_loc <- cv_find_point(point_long, point_lat)
+#' point_loc
+#' precip_file <- "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_07.nc"
 #' grid_lon <- point_loc[1]
 #' grid_lat <- point_loc[2]
 #' point_precip <- cv_point_daily_precip(precip_file, grid_lon, grid_lat)
