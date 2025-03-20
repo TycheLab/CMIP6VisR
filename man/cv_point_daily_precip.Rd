@@ -27,7 +27,8 @@ Returns a data frame with 2 columns: \code{date} and \code{precipitation}. The
 \code{cv_plot_TS}, \code{cv_plot_prob}, and \code{cv_plot_season}.
 }
 \description{
-Extracts a daily time series from a single CMIP6 raster location. The location
+Extracts a daily time series from a single CMIP6 raster location, which can
+be used to compare the CMIP6 values against station values. The location
 of the data in the CMIP6 data (its zone and raster location) is found using
 \code{cv_find_point}.
 }
@@ -36,6 +37,8 @@ of the data in the CMIP6 data (its zone and raster location) is found using
 point_long <- -110.456
 point_lat <- 52.19
 point_loc <- cv_find_point(point_long, point_lat)
+point_loc
+precip_file <- "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_07.nc"
 grid_lon <- point_loc[1]
 grid_lat <- point_loc[2]
 point_precip <- cv_point_daily_precip(precip_file, grid_lon, grid_lat)

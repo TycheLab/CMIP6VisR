@@ -12,7 +12,7 @@
 #' @examples
 #' cv_plot_season(eg_TS)
 #' @import ggplot2
-#' @importFrom dplyr filter summarize mutate group_by case_when
+#' @importFrom dplyr filter summarize mutate group_by case_when summarise n
 #' @importFrom lubridate month
 #' @importFrom magrittr %>%
 #' @importFrom ggpubr ggarrange
