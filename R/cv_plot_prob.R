@@ -12,9 +12,9 @@
 #' @examples
 #' cv_plot_prob(eg_TS)
 #' @import ggplot2
-#' @import dplyr
-#' @import lubridate
-#' @import scales
+#' @importFrom dplyr filter
+#' @importFrom magrittr %>%
+#' @importFrom scales label_comma
 #' @export
 #' @seealso \code{\link{cv_basin_daily_precip}} \code{\link{cv_plot_TS}} \code{\link{cv_plot_season}}
 

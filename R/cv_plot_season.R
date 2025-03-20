@@ -12,8 +12,9 @@
 #' @examples
 #' cv_plot_season(eg_TS)
 #' @import ggplot2
-#' @importFrom dplyr filter summarize mutate group_by
+#' @importFrom dplyr filter summarize mutate group_by case_when
 #' @importFrom lubridate month
+#' @importFrom magrittr %>%
 #' @importFrom ggpubr ggarrange
 #' @seealso \code{\link{cv_basin_daily_precip}} \code{\link{cv_plot_TS}} \code{\link{cv_plot_prob}}
 

@@ -23,10 +23,13 @@ as returned by \code{cv_find_point}.}
 \value{
 Returns a data frame with 2 columns: \code{date} and \code{precipitation}. The
 \code{date} is a standard \R date over the interval 2015-01-01 to 2100-12-31, and the
-\code{precipitation} is the basin mean value.
+\code{precipitation} is the basin mean value. The returned time series can be plotted using
+\code{cv_plot_TS}, \code{cv_plot_prob}, and \code{cv_plot_season}.
 }
 \description{
-Extracts daily precipitation for a specific location
+Extracts a daily time series from a single CMIP6 raster location. The location
+of the data in the CMIP6 data (its zone and raster location) is found using
+\code{cv_find_point}.
 }
 \examples{
 \dontrun{
@@ -40,7 +43,7 @@ point_precip <- cv_point_daily_precip(precip_file, grid_lon, grid_lat)
 
 }
 \seealso{
-\code{\link{cv_find_point}} \code{\link{cv_basin_daily_precip}} b
+\code{\link{cv_find_point}} \code{\link{cv_basin_daily_precip}}
 }
 \author{
 Kevin Shook
