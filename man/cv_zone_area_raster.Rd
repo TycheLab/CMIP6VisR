@@ -22,5 +22,5 @@ plot(zone_area_grid)
 
 }
 \author{
-Heba Abdelmoaty Kevin SHook
+Heba Abdelmoaty Kevin Shook
 }

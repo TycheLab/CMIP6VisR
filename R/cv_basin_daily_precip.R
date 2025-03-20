@@ -26,7 +26,8 @@
 #' @importFrom stringr str_sub
 #' @importFrom terra crop
 #' @importFrom terra global
-#' @returns Reruns a data frame with 2 columns: `date` and `precipitation`. The
+#' @importFrom terra rast
+#' @returns Returns a data frame with 2 columns: `date` and `precipitation`. The
 #' `date` is a standard \R date over the interval 2015-01-01 to 2100-12-31, and the 
 #' `precipitation` is the basin mean value.
 #' @export

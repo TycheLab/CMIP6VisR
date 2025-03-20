@@ -2,7 +2,7 @@
 % Please edit documentation in R/cv_find_point.R
 \name{cv_find_point}
 \alias{cv_find_point}
-\title{Locates a specific point in the CMIP6 rasters}
+\title{Locates a specific point in the CMIP6 data rasters}
 \usage{
 cv_find_point(longitude, latitude, fast = TRUE)
 }
@@ -15,13 +15,27 @@ cv_find_point(longitude, latitude, fast = TRUE)
 \code{distVincentySphere} method will be used to determine the distance between the
 coordinates of the specified point and that of all the CMIP6 raster points. If \code{FALSE},
 then the more accurate \code{distVincentyEllipsoid} method is used. The difference
-between the distances of the two methods is typically very small.}
+between the distances of the two methods is very small, typically a few metres.}
 }
 \value{
-Returns a vector of raster cell coordinates, zone number, cell area (km) and the distance
-between point and cell centre (m).
+Returns a vector containing the raster cell coordinates (\option{grid_lon},
+\option{grid_lat}), zone number (\option{zone}), cell area (\option{area}) in
+km\eqn{^2}{^2} and the distance (\option{distance}) between the between the point and cell centre (m).
 }
 \description{
-Finds the closest CMIP6 raster location to a point specified by its longitude
-and latitude.
+Finds the closest CMIP6 raster location (zone and raster longitude and latitude)
+to a point specified by its longitude
+and latitude. The distances from the raster centres are found using functions from
+\pkg{geosphere}.
+}
+\examples{
+{
+point_long <- -110.456
+point_lat <- 52.195
+point_loc <- cv_find_point(point_long, point_lat)
+point_loc
+}
+}
+\author{
+Kevin Shook
 }

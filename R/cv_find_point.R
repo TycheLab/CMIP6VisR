@@ -11,10 +11,11 @@
 #' \code{distVincentySphere} method will be used to determine the distance between the
 #' coordinates of the specified point and that of all the CMIP6 raster points. If \code{FALSE},
 #' then the more accurate \code{distVincentyEllipsoid} method is used. The difference
-#' between the distances of the two methods is typically very small.
+#' between the distances of the two methods is very small, typically a few metres.
 #' @author Kevin Shook
-#' @returns Returns a vector of raster cell coordinates, zone number, cell area (km) and the distance 
-#' between point and cell centre (m). 
+#' @returns Returns a vector containing the raster cell coordinates (\option{grid_lon}, 
+#' \option{grid_lat}), zone number (\option{zone}), cell area (\option{area}) in 
+#' km\eqn{^2}{^2} and the distance (\option{distance}) between the between the point and cell centre (m). 
 #' @importFrom geosphere distVincentyEllipsoid
 #' @importFrom geosphere distVincentySphere
 #' @export
@@ -37,7 +38,7 @@ cv_find_point <- function(longitude, latitude, fast = TRUE){
   min_dist_loc <- which.min(zone_grid_df$distance)
   rownames(zone_grid_df) <- NULL
   return_val <- as.numeric(zone_grid_df[min_dist_loc,])
-  names(return_val) <- names(zone_grid_df)
+  names(return_val) <- c("grid_lon", "grid_lat", "zone", "area", "distance")
   return_val[3] <- floor(return_val[3])
   return(return_val)
 }
