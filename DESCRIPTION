@@ -18,11 +18,13 @@ Depends: R (>= 3.5.0)
 Imports:
     terra,
     stringr,
+    geosphere,
     lubridate,
     dplyr,
     ggplot2,
     ggpubr,
-    scales
+    scales,
+    magrittr
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2

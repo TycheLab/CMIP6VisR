@@ -39,7 +39,7 @@ cv_clip_basin <- function(za_rast, basin) {
   
   # Ensure zones is a vector before applying unique()
   zone_values <- terra::values(zones)  # Extract numeric values from raster
-  zone_values <- na.omit(zone_values)  # Remove NA values
+  zone_values <- stats::na.omit(zone_values)  # Remove NA values
   zone_values <- unique(zone_values)   # Get unique zone numbers
   
   # Apply unique() safely

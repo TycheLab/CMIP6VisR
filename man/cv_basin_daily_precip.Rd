@@ -26,7 +26,7 @@ memory (which is what occurs if \code{temp_file = TRUE}), \emph{but} allows the 
 to work with very large basins, which may require more memory than is available.}
 }
 \value{
-Reruns a data frame with 2 columns: \code{date} and \code{precipitation}. The
+Returns a data frame with 2 columns: \code{date} and \code{precipitation}. The
 \code{date} is a standard \R date over the interval 2015-01-01 to 2100-12-31, and the
 \code{precipitation} is the basin mean value.
 }
