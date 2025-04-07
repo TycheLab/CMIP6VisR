@@ -18,7 +18,7 @@
 #' memory (which is what occurs if `temp_file = TRUE`), _but_ allows the function
 #' to work with very large basins, which may require more memory than is available. 
 #' @param output_file_name If `NULL`, then the precipitation values
-#' will not be written to a file. If a file name is specified, then the values will
+#' will not be written to a file. If a file name is specified, then the values _will_
 #' be written to a file. Note that if the filename exists, then the values will be 
 #' overwritten.
 #' 
@@ -30,9 +30,10 @@
 #' @importFrom terra global
 #' @importFrom terra rast
 #' @importFrom terra merge
+#' @importFrom terra writeCDF
 #' @returns Returns a \code{SpatRaster} object of the daily precipitation for all
-#' locations in the specified basin. Can write the values to a specified NetCDF file,
-#' which is recommended when the basin is large.
+#' locations in the specified basin. Optionally writes the precipitation values to 
+#' a specified NetCDF file.
 #' @export
 #'
 #' @examples \donttest{
@@ -49,7 +50,7 @@
 #'                                temp_file = FALSE)
 #' }
 
-cv_basin_daily_precip <- function(netcdf_directory = ".", 
+cv_all_basin_daily_precip <- function(netcdf_directory = ".", 
                                   scenario = "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_", 
                                   basin_zone_area = NULL,
                                   temp_file = TRUE,
@@ -102,18 +103,21 @@ cv_basin_daily_precip <- function(netcdf_directory = ".",
     area_raster <- basin_zone_area$raster[[1]]
     # crop netcdf to extent of area raster
     
-    if (is.null(output_file_name))
-      # only 1 zone
+    if (!temp_file) {
      cropped <- terra::crop(r, area_raster, mask = TRUE) 
-    else
-     cropped <- terra::crop(r, area_raster, mask = TRUE, 
-                               filename = output_file_name,
+    }
+    else{
+      crop_file <- tempfile(pattern = "file", tmpdir = tempdir(), fileext = ".tif")
+      cropped <- terra::crop(r, area_raster, mask = TRUE, 
+                             filename = crop_file,
                              overwrite = TRUE) 
+    }
+   if (!is.null(output_file_name))
+      writeCDF(cropped, output_file_name, overwrite = TRUE, varname = "pr")
     return(cropped)
   } else {
       
   # get raster of areas
-  area_raster <- basin_zone_area$raster[[i]]
     # more than 1 zone
     for (i in 1:num_zones) {
       
@@ -134,16 +138,23 @@ cv_basin_daily_precip <- function(netcdf_directory = ".",
       if (!temp_file) {
         cropped <- terra::crop(r, area_raster, mask = TRUE)
       } else{
-        crop_file <- tempfile(pattern = "file", tmpdir = tempdir(), fileext = ".nc")
+        crop_file <- tempfile(pattern = "file", tmpdir = tempdir(), fileext = ".tif")
         cropped <- terra::crop(r, area_raster, mask = TRUE, filename = crop_file)
       }
      if (i == 1) 
        all <- cropped
      else {
        # join together
-       all <- terra::merge(all, cropped)
+       if (!temp_file) {
+         all <- terra::merge(all, cropped)
+       } else{
+         all_file <- tempfile(pattern = "file", tmpdir = tempdir(), fileext = ".tif")
+         all <- terra::merge(all, cropped, filename = all_file)
+       }
      }   
-  }
+    }
   }  # if
-  
+  if (!is.null(output_file_name))
+    writeCDF(all, output_file_name, overwrite = TRUE, varname = "pr")
+  return(all)
 }
