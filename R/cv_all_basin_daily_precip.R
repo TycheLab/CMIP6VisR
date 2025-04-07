@@ -29,6 +29,7 @@
 #' @importFrom terra crop
 #' @importFrom terra global
 #' @importFrom terra rast
+#' @importFrom terra merge
 #' @returns Returns a \code{SpatRaster} object of the daily precipitation for all
 #' locations in the specified basin. Can write the values to a specified NetCDF file,
 #' which is recommended when the basin is large.
@@ -71,11 +72,7 @@ cv_basin_daily_precip <- function(netcdf_directory = ".",
   zones <- basin_zone_area$zone
   areas <- basin_zone_area$area
   num_zones <- length(zones)
-  num_areas <- length(areas)
-  weightings <- areas / sum(areas)
-  
-  if (num_zones != num_areas)
-    stop("numbers of zones and areas are not equal")
+
 
   # check if last character in scenario is an underscore and add one if necessary
   scenario_last_char <- str_sub(scenario, start = -1)
@@ -86,51 +83,67 @@ cv_basin_daily_precip <- function(netcdf_directory = ".",
   netcdf_last_char <- str_sub(netcdf_directory, start = -1)
   if (netcdf_last_char != "/")
     netcdf_directory <- paste0(netcdf_directory, "/")
+
   
   start_date <- as.Date("2015-01-01")
   end_date <- as.Date("2100-12-31")
   date <- seq(from = start_date, to = end_date, by = 1)
   df <- data.frame(date)
   
-  for (i in 1:num_zones) {
-   # assemble file name
-   netcdf_file_name <- paste0(netcdf_directory, scenario, "0", zones[i], ".nc")
-   
-   # check to be sure that the file exists
-   if (!file.exists(netcdf_file_name))
-     stop(netcdf_file_name, " does not exist")
-   
-   # get raster of areas
-   area_raster <- basin_zone_area$raster[[i]]
-   
-   r <- rast(netcdf_file_name)
-
-   # first, crop netcdf to extent of area raster
-   
-   if (!temp_file) {
-     cropped <- terra::crop(r, area_raster, mask = TRUE)
-     weighted_precip <- terra::global(cropped, 
-                             fun = "mean", 
-                             weights = area_raster, 
-                             na.rm = TRUE)
-    } else{
-    crop_file <- tempfile(pattern = "file", tmpdir = tempdir(), fileext = ".tif")
-    cropped <- terra::crop(r, area_raster, mask = TRUE, filename = crop_file)
-    weighted_precip <- terra::global(cropped, 
-                              fun = "mean", 
-                              weights = area_raster)
-    weighted_precip <- weighted_precip * weightings[i]
-    }
-   df <- cbind(df, weighted_precip)
-   names(df)[i + 1] <- zones[i]
+  if (num_zones == 1) {
+    i <- 1
+    netcdf_file_name <- paste0(netcdf_directory, scenario, "0", zones[i], ".nc")
+    
+    # check to be sure that the file exists
+    if (!file.exists(netcdf_file_name))
+      stop(netcdf_file_name, " does not exist")
+    
+    r <- rast(netcdf_file_name)
+    area_raster <- basin_zone_area$raster[[1]]
+    # crop netcdf to extent of area raster
+    
+    if (is.null(output_file_name))
+      # only 1 zone
+     cropped <- terra::crop(r, area_raster, mask = TRUE) 
+    else
+     cropped <- terra::crop(r, area_raster, mask = TRUE, 
+                               filename = output_file_name,
+                             overwrite = TRUE) 
+    return(cropped)
+  } else {
+      
+  # get raster of areas
+  area_raster <- basin_zone_area$raster[[i]]
+    # more than 1 zone
+    for (i in 1:num_zones) {
+      
+      # get raster of areas
+      area_raster <- basin_zone_area$raster[[i]]
+      
+      # assemble file name
+      netcdf_file_name <- paste0(netcdf_directory, scenario, "0", zones[i], ".nc")
+      
+      # check to be sure that the file exists
+      if (!file.exists(netcdf_file_name))
+        stop(netcdf_file_name, " does not exist")
+      
+      r <- rast(netcdf_file_name)
+      
+      # crop netcdf to extent of area raster
+      
+      if (!temp_file) {
+        cropped <- terra::crop(r, area_raster, mask = TRUE)
+      } else{
+        crop_file <- tempfile(pattern = "file", tmpdir = tempdir(), fileext = ".nc")
+        cropped <- terra::crop(r, area_raster, mask = TRUE, filename = crop_file)
+      }
+     if (i == 1) 
+       all <- cropped
+     else {
+       # join together
+       all <- terra::merge(all, cropped)
+     }   
   }
+  }  # if
   
-  if (num_zones  == 1)
-    names(df)[2] <- "precipitation"
-  else {
-    df$precipitation <- rowSums(df[, -1])
-    df <- data.frame(df$date, df$precipitation)
-    names(df) <- c("date", "precipitation")
-  }
- return(df)   
 }
