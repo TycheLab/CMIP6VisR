@@ -1,46 +1,50 @@
-#' Plot probability of exceedance for precipitation
+#' Plot Probability of Exceedance for Precipitation
 #'
-#' Plots the exceedance probabilities of non-zero values in a precipitation time 
-#' series as returned by `cv_basin_daily_precip()`, vs the precipitation value. 
-#' Uses a logarithmic scale for the y-axis.
+#' This function takes a data frame containing a precipitation time series, 
+#' filters out zero precipitation values, calculates the probability of exceedance, 
+#' and generates a scatter plot with a logarithmic y-axis.
 #'
-#' @param data A data frame with two columns: \code{date} (date or datetime) and  
-#' \code{precipitation} (numeric) as returned by `cv_basin_daily_precip()`.
-#' @return A ggplot object displaying the probability of exceedance of nonzero 
-#' precipitation. The returned plots look best when saved at the size 
-#' 16.5 x 12 cm. You can easily change the font sizes using theme().
+#' @param data A data frame with two columns: "date" (date or datetime) and 
+#'             "precipitation" (numeric).
+#' @return A ggplot object displaying the probability of exceedance of nonzero precipitation.
+#'          The returned plots look best when saved at the size 16.5 x 12 cm.
+#'          You can easily change the font sizes using theme().
 #' @examples
 #' cv_plot_prob(eg_TS)
 #' @import ggplot2
-#' @importFrom dplyr filter
-#' @importFrom magrittr %>%
-#' @importFrom scales label_comma
+#' @import dplyr
+#' @import lubridate
+#' @import scales
 #' @export
-#' @seealso \code{\link{cv_basin_daily_precip}} \code{\link{cv_plot_TS}} \code{\link{cv_plot_season}}
-
-cv_plot_prob <- function(data) {
+cv_plot_prob <- function(data, variable = "precipitation") {
   
-  precipitation <- p_e <- NULL
+  value <- precipitation <- p_e <- NULL
   
   # Ensure correct column names
-  if (!all(c("date", "precipitation") %in% colnames(data))) {
-    stop("Data frame must contain columns named 'date' and 'precipitation'.")
+  if (!variable %in% c("precipitation", "temperature")) {
+    stop("The variable argument must be either 'precipitation' or 'temperature'.")
   }
   
-  # Filter out zero precipitation values
-  data_nz <- data %>% filter(precipitation != 0)
+  colnames(data)[2] <- "value"
   
-  # Calculate probability of exceedance using the 
-  data_nz$rank <- rank(data_nz$precipitation)
+  
+  # Filter out zero precipitation values
+  data_nz <- if (variable == "precipitation") {
+    filter(data, value != 0)
+  } else {
+    data
+  }
+  # Calculate probability of exceedance
+  data_nz$rank <- rank(data_nz$value)
   data_nz$p_ne <- data_nz$rank / (nrow(data_nz) + 1)
   data_nz$p_e <- 1 - data_nz$p_ne
   
   # Generate plot
   plot <- ggplot() +
-    geom_point(data = data_nz, aes(x = precipitation, y = p_e), size = 0.5) + 
+    geom_point(data = data_nz, aes(x = value, y = p_e), size = 0.5) + 
     scale_y_log10(labels = scales::label_comma()) + 
     ylab("Probability of exceedance") + 
-    xlab("Precipitation") +
+    xlab("Value") +
     theme(
       axis.title.x = element_text(size = 9, colour = "gray25"),
       axis.title.y = element_text(size = 9, colour = "gray25"),
