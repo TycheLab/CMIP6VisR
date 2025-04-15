@@ -1,17 +1,19 @@
-#' Calculates basin-averaged daily precipitation
+#' Calculates basin-averaged daily precipitation or air temperature
 #' 
 #' @description
-#' Extracts the daily precipitation values from CMIP6 NetCDF files, and calculates
-#' the mean precipitation for a given basin for each time interval. The original files are in 
+#' Extracts daily precipitation or temperature values from CMIP6 NetCDF files, and calculates
+#' the mean for a given basin for each time interval. The original files are in 
 #' longitude-latitude projection, so the areas of the cells varies. The cell areas
-#' are used to weight the precipitation when computing the basin mean precipitation.  
+#' are used to weight the values when computing the basin mean.  
 #' 
 #' The CMIP6 data are arranged by zone in 9 files. As a given basin may lie over more than 
 #' one zone, it may necessary to read in data from more than one NetCDF file when computing
-#' the basin mean precipitation.
+#' the basin mean daily values.
 #' 
 #' @param netcdf_directory Required. Directory containing NetCDF files. 
-#' @param scenario Required. Full name of scenario to be used. This is the file name omitting the zone number.
+#' @param scenario Required. Full name of scenario to be used. This is the file name 
+#' omitting the zone number. The first character of the scenario name is used to
+#' determing the name of the variable returned.
 #' @param basin_zone_area Required. A list object returned by `cv_clip_basin()` which contains the zone numbers to be used,
 #' the basin area within each zone, and rasters of each zone containing the area of each
 #' element.
@@ -19,17 +21,14 @@
 #' from the NetCDF files. This option is slower than keeping all the values in 
 #' memory (which is what occurs if `temp_file = TRUE`), _but_ allows the function
 #' to work with very large basins, which may require more memory than is available. 
-#' 
-#' 
 #' @author Kevin Shook
 #' @seealso \code{\link{cv_clip_basin}} 
 #' @importFrom stringr str_sub
-#' @importFrom terra crop
-#' @importFrom terra global
-#' @importFrom terra rast
-#' @returns Returns a data frame with 2 columns: `date` and `precipitation`. The
+#' @importFrom terra crop global rast
+#' @returns Returns a data frame with 2 columns: `date` and either `precipitation` or
+#' `temperature`, depending on the scenario name. The
 #' `date` is a standard \R date over the interval 2015-01-01 to 2100-12-31, and the 
-#' `precipitation` is the basin mean value.
+#' `precipitation` or `temperature` is the basin mean value for each date.
 #' @export
 #'
 #' @examples \donttest{
@@ -41,22 +40,22 @@
 #' basin_vector <- vect(fpath)
 #' basin_areas <- cv_clip_basin(az_raster, basin_vector)
 #' netcdf_directory <- "."
-#' values <- cv_basin_daily_precip(netcdf_directory = netcdf_directory,
+#' values <- cv_extract_mean_basin_daily(netcdf_directory = netcdf_directory,
 #'                                basin_zone_area = basin_areas,
 #'                                temp_file = FALSE)
 #' }
 
-cv_basin_daily_precip <- function(netcdf_directory = ".", 
+cv_extract_mean_basin_daily <- function(netcdf_directory = ".", 
                                   scenario = "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_", 
                                   basin_zone_area = NULL,
                                   temp_file = TRUE) {
   # check parameter values
   
   if (is.null(scenario) | (scenario == "")) {
-    stop("cv_basin_daily_precip requires a scenario")
+    stop("cv_extract_mean_basin_daily requires a scenario")
   }
   if (missing(basin_zone_area)  | is.null(basin_zone_area)) {
-    stop("cv_basin_daily_precip requires a basin_zone_area object")
+    stop("cv_extract_mean_basin_daily requires a basin_zone_area object")
   }
   
   if (missing(netcdf_directory)  | is.null(netcdf_directory) | (netcdf_directory == "")) {
@@ -101,6 +100,15 @@ cv_basin_daily_precip <- function(netcdf_directory = ".",
    area_raster <- basin_zone_area$raster[[i]]
    
    r <- rast(netcdf_file_name)
+   
+   # get variable from first character of file name
+   base_name <- basename(netcdf_file_name)
+   first_char <- substr(base_name, 1, 1)
+   
+   if (tolower(first_char == "p"))
+     variable_name <- "precipitation"
+   else
+     variable_name <- "temperature"
 
    # first, crop netcdf to extent of area raster
    
@@ -123,11 +131,11 @@ cv_basin_daily_precip <- function(netcdf_directory = ".",
   }
   
   if (num_zones  == 1)
-    names(df)[2] <- "precipitation"
+    names(df)[2] <- variable_name
   else {
-    df$precipitation <- rowSums(df[, -1])
-    df <- data.frame(df$date, df$precipitation)
-    names(df) <- c("date", "precipitation")
+    df[,2] <- rowSums(df[, -1])
+    df <- data.frame(df$date, df[,2])
+    names(df) <- c("date", variable_name)
   }
  return(df)   
 }
