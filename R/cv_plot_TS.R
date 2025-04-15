@@ -1,43 +1,59 @@
-#' Plot precipitation time series
+#' Plot Precipitation or Temperature Time Series
 #'
-#' Creates a time series plot from a data frame of precipitation data 
-#' as returned by `cv_basin_daily_precip()`. Basic statistics (mean, standard deviation, and proportion of zero values),
-#' are added to the title of the plot.
+#' This function takes a data frame containing a precipitation time series, 
+#' calculates basic statistics (mean, standard deviation, and proportion of zero values),
+#' and generates a ggplot visualization.
 #'
-#' @param data A data frame with two columns: \code{date} (date or datetime) and  
-#' \code{precipitation} (numeric) as returned by `cv_basin_daily_precip()`.
-#' @return A ggplot object displaying the precipitation time series with summary 
-#' statistics in the title. The returned plots look best when saved at the size 
-#' 16.5 x 6 cm You can easily change the font sizes using theme().
+#' @param data A data frame with two columns: "date" (date or datetime) and 
+#'             "precipitation" (numeric).
+#' @return A ggplot object displaying the precipitation time series with summary statistics in the title.
+#'          The returned plots look best when saved at the size 16.5 x 6 cm.
+#'          You can easily change the font sizes using theme().
 #' @examples
 #' cv_plot_TS(eg_TS)
 #' @import ggplot2
 #' @importFrom stats sd
-#' @seealso \code{\link{cv_basin_daily_precip}} \code{\link{cv_plot_prob}} \code{\link{cv_plot_season}}
 #' @export
-cv_plot_TS <- function(data) {
+cv_plot_TS <- function(data, variable = "precipitation") {
   
-  precipitation <- mean_val <- sd_val <-  p0  <- NULL
+  value <- precipitation <- mean_val <- sd_val <-  p0  <- NULL
   
    
-  # Ensure correct column names
-  if (!all(c("date", "precipitation") %in% colnames(data))) {
-    stop("Data frame must contain columns named 'date' and 'precipitation'.")
+  #search for the variable
+  var_lower <- tolower(variable)
+  if (!startsWith(var_lower, "p") && !startsWith(var_lower, "t")) {
+    stop("The variable argument must start with 'p' for precipitation or 't' for temperature.")
   }
   
+  #bring the variable to the required name
+  if (startsWith(var_lower, "p")) {
+    variable <- "precipitation"
+  } else if (startsWith(var_lower, "t")) {
+    variable <- "temperature"
+  } else {
+    stop("The variable argument must start with 'p' for precipitation or 't' for temperature.")
+  }
+  
+  
+  colnames(data)[2] <- "value"
   # Compute statistics
-  mean_val <- mean(data$precipitation, na.rm = TRUE)
-  sd_val <- sd(data$precipitation, na.rm = TRUE)
-  p0 <- sum(data$precipitation == 0, na.rm = TRUE) / nrow(data)
+  mean_val <- mean(data$value, na.rm = TRUE)
+  sd_val <- sd(data$value, na.rm = TRUE)
+  p0 <- sum(data$value == 0, na.rm = TRUE) / nrow(data)
   
   # Generate plot
-  plot <- ggplot(data, aes(x = date, y = precipitation), linewidth = 0.05) + 
+  plot <- ggplot(data, aes(x = date, y = value), linewidth = 0.05) + 
     geom_line(color = "gray20") + 
-    ylab("Precipitation") + 
+    ylab("Value") + 
     xlab("Date") +
-    ggtitle(paste0("mean = ", round(mean_val, 2), 
-                   ", sd = ", round(sd_val, 2), 
-                   ", and P0 = ", round(p0, 2))) + 
+    (if (variable == "precipitation") {
+      list(ggtitle(paste0("mean = ", round(mean_val, 2), 
+                          ", sd = ", round(sd_val, 2), 
+                          ", and P0 = ", round(p0, 2))))
+    } else {
+      list(ggtitle(paste0("mean = ", round(mean_val, 2), 
+                          ", sd = ", round(sd_val, 2))))
+    }) +
     theme(
       axis.title.x = element_text(size = 9, colour = "gray25"),
       axis.title.y = element_text(size = 9, colour = "gray25"),

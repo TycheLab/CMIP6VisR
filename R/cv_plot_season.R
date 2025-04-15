@@ -1,35 +1,43 @@
-#' Plot seasonal precipitation distribution
-#' @description
-#' Creates seasonal plots of a precipitation time series, as returned by `cv_basin_daily_precip()`. Assigns seasons based on the month, 
-#' computes the proportion of zero precipitation values (P0) and seasonal means for nonzero precipitation, 
-#' and generates a violin plot showing the seasonal distribution of precipitation.
+#' Plot Seasonal Distribution of a Hydroclimatic Variable
 #'
-#' @param data A data frame with two columns: \code{date} (date or datetime) and  
-#' \code{precipitation} (numeric) as returned by `cv_basin_daily_precip()`.
-#' @return A ggplot object displaying the seasonal distribution of nonzero precipitation, 
-#' with mean values and P0 labelled. The returned plots look best when saved at 
-#' the size 16.5 x 14 cm. You can easily change the font sizes using theme().
+#' This function takes a data frame with a hydroclimatic time series (precipitation or temperature), assigns seasons based on months, 
+#' computes the proportion of zero precipitation values (P0) and seasonal means for nonzero values, 
+#' and generates a violin plot showing the seasonal distribution.
+#'
+#' @param data A data frame with two columns: "date" (date or datetime) and a variable column (e.g., "precipitation" or "temperature").
+#' @param variable A character string, either "precipitation" or "temperature". Determines plotting behavior and calculation of P0.
+#' @return A ggplot object showing seasonal distribution with summary values and optional P0.
 #' @examples
-#' cv_plot_season(eg_TS)
+#' cv_plot_season(data, variable = "precipitation")
 #' @import ggplot2
-#' @importFrom dplyr filter summarize mutate group_by case_when summarise n
-#' @importFrom lubridate month
-#' @importFrom magrittr %>%
+#' @importFrom dplyr filter mutate group_by summarise n
+#' @importFrom lubridate month year
 #' @importFrom ggpubr ggarrange
-#' @seealso \code{\link{cv_basin_daily_precip}} \code{\link{cv_plot_TS}} \code{\link{cv_plot_prob}}
-
 #' @export
-#' 
-cv_plot_season <- function(data) {
-  precipitation <- season <- mean_val <- p0 <- tot_val <- NULL
+cv_plot_season <- function(data, variable = "precipitation") {
   
-  # Ensure correct column names
-  if (!all(c("date", "precipitation") %in% colnames(data))) {
-    stop("Data frame must contain columns named 'date' and 'precipitation'.")
+  value <- precipitation <- season <- mean_val <- p0 <- tot_val <- NULL
+  
+  #search for the variable
+  var_lower <- tolower(variable)
+  if (!startsWith(var_lower, "p") && !startsWith(var_lower, "t")) {
+    stop("The variable argument must start with 'p' for precipitation or 't' for temperature.")
   }
   
-  # Extract month and assign seasons
+  #bring the variable to the required name
+  if (startsWith(var_lower, "p")) {
+    variable <- "precipitation"
+  } else if (startsWith(var_lower, "t")) {
+    variable <- "temperature"
+  } else {
+    stop("The variable argument must start with 'p' for precipitation or 't' for temperature.")
+  }
+  
+  
+  colnames(data)[2] <- "value"
   data$month <- month(data$date)
+  data$year <- year(data$date)
+  
   data <- data %>% 
     mutate(season = case_when(
       month %in% c(9, 10, 11) ~ "Fall",
@@ -38,37 +46,56 @@ cv_plot_season <- function(data) {
       month %in% c(6, 7, 8) ~ "Summer"
     ))
   
-  # Compute proportion of zero precipitation (P0)
-  p0_seas <- data %>% 
-    group_by(season) %>% 
-    summarise(p0 = sum(precipitation == 0, na.rm = TRUE) / n())
+  if (variable == "precipitation") {
+    p0_seas1 <- data %>%
+      group_by(season, year) %>%
+      summarise(p0 = sum(value == 0, na.rm = TRUE) / n(), .groups = "drop")
+    
+    p0_seas <- p0_seas1 %>%
+      group_by(season) %>%
+      summarise(p0 = mean(p0), .groups = "drop")
+  }
   
-  # Filter out zero precipitation values
-  data_nz <- data %>% filter(precipitation != 0)
+  data_nz <- if (variable == "precipitation") {
+    filter(data, value != 0)
+  } else {
+    data
+  }
   
-  # Compute seasonal mean for nonzero precipitation
-  mean_seas <- data_nz %>% 
-    group_by(season) %>% 
-    summarise(mean_val = mean(precipitation, na.rm = TRUE))
+  mean_seas <- data_nz %>%
+    group_by(season) %>%
+    summarise(mean_val = mean(value, na.rm = TRUE), .groups = "drop")
   
-  # Compute seasonal mean for nonzero precipitation
-  tot_mon <- data_nz %>% 
-    group_by(month) %>% 
-    summarise(tot_val = sum(precipitation, na.rm = TRUE))
+  tot_mon1 <- data_nz %>%
+    group_by(month, year) %>%
+    summarise(tot_val1 = if (variable == "precipitation") {
+      sum(value, na.rm = TRUE)
+    } else {
+      mean(value, na.rm = TRUE)
+    }, .groups = "drop")
   
-  # Generate plot
+  tot_mon <- tot_mon1 %>%
+    group_by(month) %>%
+    summarise(tot_val = mean(tot_val1, na.rm = TRUE), .groups = "drop")
+  
   plot1 <- ggplot() + 
-    geom_violin(data = data_nz, aes(x = season, y = precipitation, fill = season), linewidth = 0.2) + 
+    geom_violin(data = data_nz, aes(x = season, y = value, fill = season), linewidth = 0.2) + 
     geom_point(data = mean_seas, aes(x = season, y = mean_val), shape = 4) +
     geom_text(data = mean_seas, aes(x = season, y = mean_val, 
-                                    label = round(mean_val, 2)), vjust = -0.8, size = 2.2) + 
-    geom_label(data = p0_seas, aes(x = season, y = max(data_nz$precipitation), 
-                                   label = paste0("P0 = ", round(p0, 2))), size = 2.2) + 
-    scale_fill_manual(values = c("Summer" = "#3da83d",
-                                 "Spring" = "#FFC3A0",
-                                 "Fall" = "#9B2335",
-                                 "Winter" = "#B0E0E6")) +
-    ylab("Seasonal average nonzero precipitation") +
+                                    label = round(mean_val, 2)), vjust = -0.8, size = 2.2) +
+    (if (variable == "precipitation") {
+      list(geom_label(data = p0_seas, aes(x = season, y = max(data_nz$value), 
+                                          label = paste0("P0 = ", round(p0, 2))), size = 2.2))
+    } else {
+      list()
+    }) +
+    scale_fill_manual(values = c("Summer" = "#3da83d", "Spring" = "#FFC3A0",
+                                 "Fall" = "#9B2335", "Winter" = "#B0E0E6")) +
+    ylab(if (variable == "precipitation") {
+      "Seasonal average precipitation"
+    } else {
+      "Seasonal average temperature"
+    }) +
     xlab("Season") +
     theme(
       legend.text = element_text(size = 7),
@@ -98,12 +125,16 @@ cv_plot_season <- function(data) {
       text = element_text(color = "gray25"),
       legend.box.margin = margin(0.5, 0.5, 0.5, 0.5)
     )
-  plot1
+  
   
   plot2 <- ggplot() + 
     geom_col(data = tot_mon, aes(x = as.factor(month), y = tot_val),
              linewidth = 0.2, fill = "skyblue") + 
-    ylab("Monthly total nonzero precipitation") +
+    ylab(if (variable == "precipitation") {
+      "Monthly total nonzero precipitation"
+    } else {
+      "Monthly average temperature"
+    }) +
     xlab("Month") +
     theme(
       legend.text = element_text(size = 7),
@@ -133,10 +164,6 @@ cv_plot_season <- function(data) {
       text = element_text(color = "gray25"),
       legend.box.margin = margin(0.5, 0.5, 0.5, 0.5)
     )
-  plot2
   
-  gg <- ggarrange(plot1, plot2, nrow = 2, ncol = 1)
-  return(gg)
+  ggarrange(plot1, plot2, nrow = 2)
 }
-
-

@@ -24,7 +24,11 @@ Imports:
     ggplot2,
     ggpubr,
     scales,
-    magrittr
+    magrittr,
+    sf,
+    stars,
+    tidyr,
+    units
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.2
