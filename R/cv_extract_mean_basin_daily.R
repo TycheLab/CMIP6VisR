@@ -13,7 +13,7 @@
 #' @param netcdf_directory Required. Directory containing NetCDF files. 
 #' @param scenario Required. Full name of scenario to be used. This is the file name 
 #' omitting the zone number. The first character of the scenario name is used to
-#' determing the name of the variable returned.
+#' determine the name of the variable returned.
 #' @param basin_zone_area Required. A list object returned by `cv_clip_basin()` which contains the zone numbers to be used,
 #' the basin area within each zone, and rasters of each zone containing the area of each
 #' element.
@@ -92,6 +92,17 @@ cv_extract_mean_basin_daily <- function(netcdf_directory = ".",
    # assemble file name
    netcdf_file_name <- paste0(netcdf_directory, scenario, "0", zones[i], ".nc")
    
+   if (i == 1) {
+     # get variable from first character of file name
+     base_name <- basename(netcdf_file_name)
+     first_char <- substr(base_name, 1, 1)
+     
+     if (tolower(first_char == "p"))
+       variable_name <- "precipitation"
+     else
+       variable_name <- "temperature"
+   }
+   
    # check to be sure that the file exists
    if (!file.exists(netcdf_file_name))
      stop(netcdf_file_name, " does not exist")
@@ -101,15 +112,6 @@ cv_extract_mean_basin_daily <- function(netcdf_directory = ".",
    
    r <- rast(netcdf_file_name)
    
-   # get variable from first character of file name
-   base_name <- basename(netcdf_file_name)
-   first_char <- substr(base_name, 1, 1)
-   
-   if (tolower(first_char == "p"))
-     variable_name <- "precipitation"
-   else
-     variable_name <- "temperature"
-
    # first, crop netcdf to extent of area raster
    
    if (!temp_file) {

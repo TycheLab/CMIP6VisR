@@ -1,7 +1,7 @@
-#' Extracts daily precipitation for all locations in a basin
+#' Extracts daily precipitation or temperatures for all locations in a basin
 #' 
 #' @description
-#' Extracts the daily precipitation values from CMIP6 NetCDF files for all locations
+#' Extracts the daily precipitation or temperature values from CMIP6 NetCDF files for all locations
 #' in a specified basin.  
 #' 
 #' The CMIP6 data are arranged by zone in 9 files. As a given basin may lie over more than 
@@ -9,9 +9,12 @@
 #' the basin mean precipitation.
 #' 
 #' @param netcdf_directory Required. Directory containing NetCDF files. 
-#' @param scenario Required. Full name of scenario to be used. This is the file name omitting the zone number.
-#' @param basin_zone_area Required. A list object returned by `cv_clip_basin()` which contains the zone numbers to be used,
-#' the basin area within each zone, and rasters of each zone containing the area of each
+#' @param scenario Required. Full name of scenario to be used. This is the file 
+#' name omitting the zone number. The first character of the scenario name is used to
+#' determine the name of the variable returned.
+#' @param basin_zone_area Required. A list object returned by `cv_clip_basin()` 
+#' which contains the zone numbers to be used, the basin area within each zone, 
+#' and rasters of each zone containing the area of each
 #' element.
 #' @param temp_file If `TRUE` (the default) then temporary files will be used when extracting the values
 #' from the NetCDF files. This option is slower than keeping all the values in 
@@ -22,15 +25,10 @@
 #' be written to a file. Note that if the filename exists, then the values will be 
 #' overwritten.
 #' 
-#' 
 #' @author Kevin Shook
 #' @seealso \code{\link{cv_basin_daily_precip}} 
 #' @importFrom stringr str_sub
-#' @importFrom terra crop
-#' @importFrom terra global
-#' @importFrom terra rast
-#' @importFrom terra merge
-#' @importFrom terra writeCDF
+#' @importFrom terra crop global rast merge writeCDF
 #' @returns Returns a \code{SpatRaster} object of the daily precipitation for all
 #' locations in the specified basin. Optionally writes the precipitation values to 
 #' a specified NetCDF file.
@@ -45,12 +43,12 @@
 #' basin_vector <- vect(fpath)
 #' basin_areas <- cv_clip_basin(az_raster, basin_vector)
 #' netcdf_directory <- "."
-#' all_precip<- cv_all_basin_daily_precip(netcdf_directory = netcdf_directory,
+#' all_precip <- cv_extract_all_basin_daily(netcdf_directory = netcdf_directory,
 #'                                basin_zone_area = basin_areas,
 #'                                temp_file = FALSE)
 #' }
 
-cv_all_basin_daily_precip <- function(netcdf_directory = ".", 
+cv_extract_all_basin_daily <- function(netcdf_directory = ".", 
                                   scenario = "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_", 
                                   basin_zone_area = NULL,
                                   temp_file = TRUE,
@@ -58,10 +56,10 @@ cv_all_basin_daily_precip <- function(netcdf_directory = ".",
   # check parameter values
   
   if (is.null(scenario) | (scenario == "")) {
-    stop("cv_basin_daily_precip requires a scenario")
+    stop("cv_extract_all_basin_daily requires a scenario")
   }
   if (missing(basin_zone_area)  | is.null(basin_zone_area)) {
-    stop("cv_basin_daily_precip requires a basin_zone_area object")
+    stop("cv_extract_all_basin_daily requires a basin_zone_area object")
   }
   
   if (missing(netcdf_directory)  | is.null(netcdf_directory) | (netcdf_directory == "")) {
@@ -94,6 +92,11 @@ cv_all_basin_daily_precip <- function(netcdf_directory = ".",
   if (num_zones == 1) {
     i <- 1
     netcdf_file_name <- paste0(netcdf_directory, scenario, "0", zones[i], ".nc")
+
+    # get variable from first character of file name
+    base_name <- basename(netcdf_file_name)
+    first_char <- substr(base_name, 1, 1)
+
     
     # check to be sure that the file exists
     if (!file.exists(netcdf_file_name))
