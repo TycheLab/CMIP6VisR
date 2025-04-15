@@ -22,7 +22,8 @@
 #' @importFrom lubridate year month
 #' @importFrom units drop_units
 #' @export
-plot_precip_map <- function(nc_file, stat_type = c("daily", "monthly", "annual")) {
+plot_precip_map <- function(nc_file, stat_type = "daily") {
+  
   stat_type <- tolower(stat_type[1])
   valid_types <- c("daily", "monthly", "annual")
   

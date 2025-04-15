@@ -19,10 +19,21 @@ cv_plot_TS <- function(data, variable = "precipitation") {
   value <- precipitation <- mean_val <- sd_val <-  p0  <- NULL
   
    
-  # Ensure correct column names
-  if (!variable %in% c("precipitation", "temperature")) {
-    stop("The variable argument must be either 'precipitation' or 'temperature'.")
+  #search for the variable
+  var_lower <- tolower(variable)
+  if (!startsWith(var_lower, "p") && !startsWith(var_lower, "t")) {
+    stop("The variable argument must start with 'p' for precipitation or 't' for temperature.")
   }
+  
+  #bring the variable to the required name
+  if (startsWith(var_lower, "p")) {
+    variable <- "precipitation"
+  } else if (startsWith(var_lower, "t")) {
+    variable <- "temperature"
+  } else {
+    stop("The variable argument must start with 'p' for precipitation or 't' for temperature.")
+  }
+  
   
   colnames(data)[2] <- "value"
   # Compute statistics

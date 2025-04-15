@@ -187,35 +187,33 @@ cv_plot_prob(values, variable = "precipitation")
 
 4.1. Precipitation
 The following plot shows a map of the average nonzero daily, average total monthly, or annual maxima of daily precipitation.
-```{r}
-ncpath <- system.file("extdata", "Pincher_ck.nc", package = "CMIP6VisR")
-
-plot_precip_map(ncpath, stat_type = "daily")
+```{r eval=FALSE}
+cv_plot_map("ncpath/ncfile.nc", stat_type = "daily")
 ```
 
-```{r}
-plot_precip_map(ncpath, stat_type = "monthly")
+```{r eval=FALSE}
+cv_plot_map("ncpath/ncfile.nc", stat_type = "monthly")
 ```
 
-```{r}
-plot_precip_map(ncpath, stat_type = "annual")
+```{r eval=FALSE}
+cv_plot_map("ncpath/ncfile.nc", stat_type = "annual")
 ```
 
 
 4.2. Temperature
 The following plot shows a map of the average daily, average  monthly, or annual maxima of daily temperature
 
-```{r}
-plot_precip_map(ncpath, stat_type = "daily")
+```{r eval=FALSE}
+cv_plot_map("ncpath/ncfile.nc", stat_type = "daily")
 ```
 
 
-```{r}
-plot_precip_map(ncpath, stat_type = "monthly")
+```{r eval=FALSE}
+cv_plot_map("ncpath/ncfile.nc", stat_type = "monthly")
 ```
 
 
-```{r}
-plot_precip_map(ncpath, stat_type = "annual")
+```{r eval=FALSE}
+cv_plot_map("ncpath/ncfile.nc", stat_type = "annual")
 ```
 
