@@ -16,7 +16,7 @@ cv_extract_mean_basin_daily(
 
 \item{scenario}{Required. Full name of scenario to be used. This is the file name
 omitting the zone number. The first character of the scenario name is used to
-determing the name of the variable returned.}
+determine the name of the variable returned.}
 
 \item{basin_zone_area}{Required. A list object returned by \code{cv_clip_basin()} which contains the zone numbers to be used,
 the basin area within each zone, and rasters of each zone containing the area of each
@@ -53,14 +53,13 @@ fpath <- system.file("extdata", "07BF001.shp", package = "CMIP6VisR")
 basin_vector <- vect(fpath)
 basin_areas <- cv_clip_basin(az_raster, basin_vector)
 netcdf_directory <- "."
-variable <- "temp"
-values <- cv_basin_daily_precip(netcdf_directory = netcdf_directory,
+values <- cv_extract_mean_basin_daily(netcdf_directory = netcdf_directory,
                                basin_zone_area = basin_areas,
                                temp_file = FALSE)
 }
 }
 \seealso{
-\code{\link{cv_clip_basin}}
+\code{\link{cv_clip_basin}} \code{\link{cv_extract_all_basin_daily}}
 }
 \author{
 Kevin Shook
