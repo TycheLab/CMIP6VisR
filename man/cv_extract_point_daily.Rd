@@ -48,7 +48,7 @@ point_precip <- cv_extract_point_daily(precip_file, grid_lon, grid_lat)
 
 }
 \seealso{
-\code{\link{cv_find_point}} \code{\link{cv_basin_daily_precip}}
+\code{\link{cv_find_point}} \code{\link{cv_extract_all_basin_daily}} \code{\link{cv_extract_mean_basin_daily}}
 }
 \author{
 Kevin Shook

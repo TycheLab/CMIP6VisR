@@ -12,7 +12,7 @@
 #' @param grid_lat Required. Latitude of grid cell containing the location,
 #' as returned by \code{cv_find_point}.
 #' @author Kevin Shook
-#' @seealso \code{\link{cv_find_point}} \code{\link{cv_basin_daily_precip}} 
+#' @seealso \code{\link{cv_find_point}} \code{\link{cv_extract_all_basin_daily}} \code{\link{cv_extract_mean_basin_daily}} 
 #' @importFrom terra rast ext extract varnames
 #' @returns Returns a data frame with 2 columns: `date` and either `precipitation` 
 #' or `temperature`, depending on the file name. The

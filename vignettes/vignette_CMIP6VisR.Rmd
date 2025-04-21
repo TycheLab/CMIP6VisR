@@ -124,7 +124,7 @@ Alternatively, you can use Globus Data Transfer for downloading files directly t
 
 ## Get the data within the required shapefile
 
-The function `cv_basin_daily_precip` has several parameters:
+The function `cv_mean_basin_daily` has several parameters:
 1. *netcdf_directory*: the path of the saved NC files downloaded from the FRDR portal.
 2. *scenario* the scenario argument which indicates the name of the simulation (the part of the string that is before the zone number). For example: "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_"
 3. *basin_zone_area*: the output resulting from `cv_clip_basin` getting the grid area information of the target basin. 
@@ -134,7 +134,7 @@ which is relatively fast. However, if you are using a very large basin, then you
 The function uses the areas for each cell to weight the precipitation from the NetCDF file(s).
 
 ```{r, eval=FALSE}
-values <- cv_basin_daily_precip(netcdf_directory = "./data/",
+values <- cv_mean_basin_daily(netcdf_directory = "./data/",
                                 scenario = "pr_day_ACCESS-CM2_ssp126_r2i1p1f1_gn_20150101-21001231_cannc_SPQM_",
                                 basin_zone_area = req_data,
                                 temp_file = FALSE)

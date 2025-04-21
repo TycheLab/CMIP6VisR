@@ -21,7 +21,7 @@
 #'   \item `zone` (zone numbers).
 #' }
 #'
-#' @seealso \code{\link{cv_basin_daily_precip}}
+#' @seealso \code{\link{cv_extract_mean_basin_daily}} \code{\link{cv_extract_all_basin_daily}}
 #'
 #' @examples
 #' \dontrun{

@@ -8,7 +8,7 @@ cv_plot_season(data)
 }
 \arguments{
 \item{data}{A data frame with two columns: \code{date} (date or datetime) and
-\code{precipitation} (numeric) as returned by \code{cv_basin_daily_precip()}.}
+\code{precipitation} (numeric) as returned by \code{cv_extract_mean_basin_daily()}.}
 }
 \value{
 A ggplot object displaying the seasonal distribution of nonzero precipitation,
@@ -24,5 +24,5 @@ and generates a violin plot showing the seasonal distribution of precipitation.
 cv_plot_season(eg_TS)
 }
 \seealso{
-\code{\link{cv_basin_daily_precip}} \code{\link{cv_plot_TS}} \code{\link{cv_plot_prob}}
+\code{\link{cv_extract_mean_basin_daily}} \code{\link{cv_plot_TS}} \code{\link{cv_plot_prob}}
 }

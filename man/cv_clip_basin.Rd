@@ -34,7 +34,7 @@ basin_areas <- cv_clip_basin(az_raster, basin_vector)
 
 }
 \seealso{
-\code{\link{cv_basin_daily_precip}}
+\code{\link{cv_extract_mean_basin_daily}} \code{\link{cv_extract_all_basin_daily}}
 }
 \author{
 Kostas Andreadis
