@@ -22,7 +22,7 @@
 #' memory (which is what occurs if `temp_file = TRUE`), _but_ allows the function
 #' to work with very large basins, which may require more memory than is available. 
 #' @author Kevin Shook
-#' @seealso \code{\link{cv_clip_basin}} 
+#' @seealso \code{\link{cv_clip_basin}} \code{\link{cv_extract_all_basin_daily}} 
 #' @importFrom stringr str_sub
 #' @importFrom terra crop global rast
 #' @returns Returns a data frame with 2 columns: `date` and either `precipitation` or

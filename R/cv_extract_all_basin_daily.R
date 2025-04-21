@@ -26,7 +26,7 @@
 #' overwritten.
 #' 
 #' @author Kevin Shook
-#' @seealso \code{\link{cv_basin_daily_precip}} 
+#' @seealso \code{\link{cv_clip_basin}} \code{\link{cv_extract_mean_basin_daily}} 
 #' @importFrom stringr str_sub
 #' @importFrom terra crop global rast merge writeCDF
 #' @returns Returns a \code{SpatRaster} object of the daily precipitation for all
