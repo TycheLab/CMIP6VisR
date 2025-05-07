@@ -8,7 +8,7 @@ cv_plot_TS(data)
 }
 \arguments{
 \item{data}{A data frame with two columns: \code{date} (date or datetime) and
-\code{precipitation} (numeric) as returned by \code{cv_basin_daily_precip()}.}
+\code{precipitation} (numeric) as returned by \code{cv_mean_basin_daily()}.}
 }
 \value{
 A ggplot object displaying the precipitation time series with summary
@@ -17,12 +17,12 @@ statistics in the title. The returned plots look best when saved at the size
 }
 \description{
 Creates a time series plot from a data frame of precipitation data
-as returned by \code{cv_basin_daily_precip()}. Basic statistics (mean, standard deviation, and proportion of zero values),
+as returned by \code{cv_extract_mean_basin_daily()}. Basic statistics (mean, standard deviation, and proportion of zero values),
 are added to the title of the plot.
 }
 \examples{
 cv_plot_TS(eg_TS)
 }
 \seealso{
-\code{\link{cv_basin_daily_precip}} \code{\link{cv_plot_prob}} \code{\link{cv_plot_season}}
+\code{\link{cv_extract_mean_basin_daily}} \code{\link{cv_plot_prob}} \code{\link{cv_plot_season}}
 }
